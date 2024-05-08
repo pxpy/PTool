@@ -143,7 +143,7 @@ public class GeneratorUtils {
      * @param psiClass 类元素
      * @return boolean
      */
-    private boolean isController(PsiClass psiClass) {
+    public static boolean isController(PsiClass psiClass) {
         PsiAnnotation[] psiAnnotations = psiClass.getModifierList().getAnnotations();
         for (PsiAnnotation psiAnnotation : psiAnnotations) {
             String controllerAnnotation = "org.springframework.stereotype.Controller";
