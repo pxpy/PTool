@@ -174,6 +174,17 @@ public class GeneratorUtils {
         return false;
     }
 
+    private boolean hasSwaggerAnnotation(PsiField psiField) {
+        PsiAnnotation[] psiAnnotations = psiField.getModifierList().getAnnotations();
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            if (isSwaggerAnnotation(psiAnnotation.getQualifiedName())) {
+                // controller
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * 获取RequestMapping注解属性
      * @param psiAnnotations 注解元素数组
@@ -359,6 +370,9 @@ public class GeneratorUtils {
      * @param psiField 类属性元素
      */
     private void generateFieldAnnotation(PsiField psiField){
+        if(hasSwaggerAnnotation(psiField)){
+            return;
+        }
         PsiComment classComment = null;
         for (PsiElement tmpEle : psiField.getChildren()) {
             if (tmpEle instanceof PsiComment) {
