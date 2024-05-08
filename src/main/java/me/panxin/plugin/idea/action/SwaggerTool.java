@@ -1,4 +1,4 @@
-package me.panxin.plugin.idea;
+package me.panxin.plugin.idea.action;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

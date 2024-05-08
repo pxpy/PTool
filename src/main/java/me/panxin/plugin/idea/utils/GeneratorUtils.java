@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static me.panxin.plugin.idea.enums.SwaggerAnnotation.APIMODEL;
 import static me.panxin.plugin.idea.enums.SwaggerAnnotation.isSwaggerAnnotation;
 
 /**
@@ -239,6 +240,9 @@ public class GeneratorUtils {
      * @param isController 是否为controller
      */
     private void generateClassAnnotation(PsiClass psiClass, boolean isController){
+        if(hasSwaggerAnnotation(psiClass)){
+            return;
+        }
         PsiComment classComment = null;
         for (PsiElement tmpEle : psiClass.getChildren()) {
             if (tmpEle instanceof PsiComment){
@@ -256,10 +260,12 @@ public class GeneratorUtils {
                     annotationFromText = String.format("@%s(value = %s, tags = {\"%s\"})",annotation,fieldValue,commentDesc);
                 } else {
                     annotation = "ApiModel";
-                    qualifiedName = "io.swagger.annotations.ApiModel";
+                    qualifiedName = APIMODEL.getQualifiedName();
                     annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
                 }
-                this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+                if(StringUtils.isNotEmpty(annotationFromText)){
+                    this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+                }
             }
         }
         if (Objects.isNull(classComment)) {
@@ -276,7 +282,8 @@ public class GeneratorUtils {
                 qualifiedName = "io.swagger.annotations.ApiModel";
                 annotationFromText = String.format("@%s", annotation);
             }
-            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+            // TODO 调用翻译api
+//            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
         }
     }
 

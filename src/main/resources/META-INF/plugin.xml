@@ -30,14 +30,14 @@
     <group id="PTool" text="PTool" description="PTool" popup="true">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <!-- Add your actions here -->
-      <action class="me.panxin.plugin.idea.SwaggerTool"
-              text="SwaggerAnnotation"
-              description="添加swagger注解"
+      <action class="me.panxin.plugin.idea.action.GenAllSwaggerAnnotationAction"
+              text="所有的实体类添加swagger注解(会卡顿)"
+              description="所有的实体类添加swagger注解(会卡顿)"
       >
         <keyboard-shortcut first-keystroke="control shift J"  keymap="$default"/>
       </action>
     </group>
-      <action id="me.panxin.plugin.idea.SwaggerTool" class="me.panxin.plugin.idea.SwaggerTool" text="SwaggerAnnotation"
+      <action id="me.panxin.plugin.idea.action.SwaggerTool" class="me.panxin.plugin.idea.action.SwaggerTool" text="SwaggerAnnotation"
               description="Generate swagger annotation">
           <add-to-group group-id="GenerateGroup" anchor="first"/>
 

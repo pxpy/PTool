@@ -1,4 +1,6 @@
 # PTool
+## 注意
+所有功能需要在idea建立索引以后
 
 ## 1. swagger-annotation-generator
 可以为整个项目的controller和实体类增添swagger注解
