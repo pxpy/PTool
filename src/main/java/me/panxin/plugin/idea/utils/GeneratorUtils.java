@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static me.panxin.plugin.idea.enums.SwaggerAnnotation.isSwaggerAnnotation;
+
 /**
  * 生成器实用程序
  *
@@ -147,6 +149,24 @@ public class GeneratorUtils {
             String restControllerAnnotation = "org.springframework.web.bind.annotation.RestController";
             if (controllerAnnotation.equals(psiAnnotation.getQualifiedName())
                     || restControllerAnnotation.equals(psiAnnotation.getQualifiedName())) {
+                // controller
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * 有Swagger注释
+     *
+     * @param psiClass psi级
+     * @return boolean
+     */
+    private boolean hasSwaggerAnnotation(PsiClass psiClass) {
+        PsiAnnotation[] psiAnnotations = psiClass.getModifierList().getAnnotations();
+        for (PsiAnnotation psiAnnotation : psiAnnotations) {
+            if (isSwaggerAnnotation(psiAnnotation.getQualifiedName())) {
                 // controller
                 return true;
             }
@@ -346,12 +366,15 @@ public class GeneratorUtils {
                 // 注释的内容
                 String tmpText = classComment.getText();
                 String commentDesc = CommentUtils.getCommentDesc(tmpText);
-                String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",commentDesc);
-                this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
+                if(StringUtils.isNotEmpty(commentDesc)){
+                    String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",commentDesc);
+                    this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
+                }
             }
         }
         if (Objects.isNull(classComment)) {
-            this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", "@ApiModelProperty(\"\")", psiField);
+            // TODO 调用翻译软件api
+//            this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", "@ApiModelProperty(\"\")", psiField);
         }
     }
 
