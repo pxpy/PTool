@@ -1,0 +1,47 @@
+<idea-plugin>
+  <id>me.panxin.plugin.idea.PTool</id>
+  <name>PTool</name>
+  <version>1.0.0</version>
+  <vendor>Pan Xin</vendor>
+
+  <description><![CDATA[
+      idea插件工具包
+    ]]></description>
+
+
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="145.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.java</depends>
+
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+  </extensions>
+
+  <actions>
+    <group id="PTool" text="PTool" description="PTool" popup="true">
+      <add-to-group group-id="ToolsMenu" anchor="first"/>
+      <!-- Add your actions here -->
+      <action class="me.panxin.plugin.idea.SwaggerTool"
+              text="SwaggerAnnotation"
+              description="添加swagger注解"
+      >
+        <keyboard-shortcut first-keystroke="control shift J"  keymap="$default"/>
+      </action>
+    </group>
+      <action id="me.panxin.plugin.idea.SwaggerTool" class="me.panxin.plugin.idea.SwaggerTool" text="SwaggerAnnotation"
+              description="Generate swagger annotation">
+          <add-to-group group-id="GenerateGroup" anchor="first"/>
+
+      </action>
+  </actions>
+
+</idea-plugin>
