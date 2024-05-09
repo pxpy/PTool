@@ -250,6 +250,9 @@ public class GeneratorUtils {
                 // 注释的内容
                 String tmpText = classComment.getText();
                 String commentDesc = CommentUtils.getCommentDesc(tmpText);
+                if(StringUtils.isEmpty(commentDesc)){
+                    continue;
+                }
                 String annotationFromText;
                 String annotation;
                 String qualifiedName;
@@ -263,9 +266,7 @@ public class GeneratorUtils {
                     qualifiedName = APIMODEL.getQualifiedName();
                     annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
                 }
-                if(StringUtils.isNotEmpty(annotationFromText)){
-                    this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
-                }
+                this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
             }
         }
         if (Objects.isNull(classComment)) {

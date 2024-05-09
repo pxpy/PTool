@@ -27,8 +27,9 @@ IDEA Plugin -Generate swagger annotation
     private String test3;
 ```
 ### TODO
-1. 新增swagger2及3版本选择
+1. 新增swagger3版本选择
 2. 没有注解或者注释的，调用翻译api生成注解
+3. 添加进度条
 
 ### bug
 1. 类中有重复的文档注释，会增加两条注解

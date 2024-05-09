@@ -17,7 +17,12 @@ public enum SwaggerAnnotation {
      */
     API("io.swagger.annotations.Api"),
     APIOPERATION("io.swagger.annotations.ApiOperation"),
-    APIMODELPROPERTY("io.swagger.annotations.ApiModelProperty");
+    APIMODELPROPERTY("io.swagger.annotations.ApiModelProperty"),
+    SCHEMA("io.swagger.v3.oas.annotations.media.Schema"),
+    PARAMETER("io.swagger.v3.oas.annotations.Parameter"),
+    PARAMETERIN("io.swagger.v3.oas.annotations.enums.ParameterIn"),
+    OPERATION("io.swagger.v3.oas.annotations.Operation"),
+    TAG("io.swagger.v3.oas.annotations.tags.Tag");
 
     private final String qualifiedName;
 

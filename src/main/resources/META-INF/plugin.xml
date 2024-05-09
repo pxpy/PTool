@@ -40,16 +40,19 @@
       </action>
       <action class="me.panxin.plugin.idea.action.GenAllControllerSwaggerAnnotationAction"
               text="所有的接口添加swagger注解(会卡顿)"
-              description="所有的接口添加swagger注解(会卡顿)"
+              description="所有的接口添加swagger2注解(会卡顿)"
       >
         <keyboard-shortcut first-keystroke="control shift C"  keymap="$default"/>
       </action>
     </group>
-      <action id="me.panxin.plugin.idea.action.SwaggerTool" class="me.panxin.plugin.idea.action.SwaggerTool" text="SwaggerAnnotation"
+      <action id="me.panxin.plugin.idea.action.SwaggerTool" class="me.panxin.plugin.idea.action.SwaggerTool" text="SwaggerAnnotation 2"
               description="Generate swagger2 annotation">
           <add-to-group group-id="GenerateGroup" anchor="first"/>
 
       </action>
+    <action id="me.panxin.plugin.idea.action.SwaggerTool3" class="me.panxin.plugin.idea.action.SwaggerTool3" text="SwaggerAnnotation 3" description="Generate swagger annotation 3.x">
+      <add-to-group group-id="GenerateGroup" anchor="first" />
+    </action>
   </actions>
 
 </idea-plugin>
