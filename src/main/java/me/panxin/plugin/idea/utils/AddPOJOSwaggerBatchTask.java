@@ -9,13 +9,13 @@ import com.intellij.psi.PsiFile;
 
 import java.util.List;
 
-public class MyLongRunningTask extends Task.Backgroundable {
+public class AddPOJOSwaggerBatchTask extends Task.Backgroundable {
 
     private  final  PsiFile psiFile;
     private final  List<PsiClass> classesToCheck;
 
     private final Project project;
-    public MyLongRunningTask(Project project, PsiFile psiFile,List<PsiClass> classesToCheck, String title) {
+    public AddPOJOSwaggerBatchTask(Project project, PsiFile psiFile, List<PsiClass> classesToCheck, String title) {
         super(project, title, true); // true 表示任务可以在后台运行，不会阻塞UI
         this.psiFile = psiFile;
         this.classesToCheck = classesToCheck;
@@ -35,7 +35,7 @@ public class MyLongRunningTask extends Task.Backgroundable {
             PsiDirectory containingDirectory = containingFile.getContainingDirectory();
             String directoryName = containingDirectory.getName();
             if (POJO.isPOJO(directoryName, psiClass.getName())) {
-                new GeneratorUtils(project, psiFile, psiClass, "").doGenerate();
+                new GeneratorUtils(project,  psiClass.getContainingFile(), psiClass, "").doGenerate();
 
             }
         }

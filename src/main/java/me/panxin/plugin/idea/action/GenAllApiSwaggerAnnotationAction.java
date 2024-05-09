@@ -8,13 +8,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtilBase;
-import me.panxin.plugin.idea.utils.GeneratorUtils;
+import me.panxin.plugin.idea.utils.AddApiSwaggerBatchTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenAllControllerSwaggerAnnotationAction extends AnAction {
+public class GenAllApiSwaggerAnnotationAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         Project project = event.getProject();
@@ -29,14 +29,7 @@ public class GenAllControllerSwaggerAnnotationAction extends AnAction {
             assert editor != null;
             assert project != null;
             PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
-            for (PsiClass psiClass : classesToCheck) {
-
-                // 判断文件是否是Controller
-                if (GeneratorUtils.isController(psiClass)) {
-                    new GeneratorUtils(project, psiFile, psiClass, "").doGenerate();
-
-                }
-            }
+            new AddApiSwaggerBatchTask(project, psiFile, classesToCheck,"给接口批量添加swagger注解").queue();
         }
     }
 

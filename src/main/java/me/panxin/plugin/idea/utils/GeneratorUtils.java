@@ -13,8 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static me.panxin.plugin.idea.enums.SwaggerAnnotation.APIMODEL;
-import static me.panxin.plugin.idea.enums.SwaggerAnnotation.isSwaggerAnnotation;
+import static me.panxin.plugin.idea.enums.SwaggerAnnotation.*;
 
 /**
  * 生成器实用程序
@@ -418,10 +417,18 @@ public class GeneratorUtils {
         }
         PsiClass[] psiClasses = PsiShortNamesCache.getInstance(project).getClassesByName(className, GlobalSearchScope.allScope(project));
         // 待导入类有多个同名类或没有时 让用户自行处理
-        if (psiClasses.length != 1) {
+        if (psiClasses.length == 0) {
             return;
         }
         PsiClass waiteImportClass = psiClasses[0];
+        if(psiClasses.length > 1){
+            for (PsiClass pc : psiClasses) {
+                String fullQualifiedName = pc.getQualifiedName();
+                if(fullQualifiedName.equals(API.getQualifiedName())){
+                    waiteImportClass= pc;
+                }
+            }
+        }
         for (PsiImportStatementBase is : importList.getAllImportStatements()) {
             String impQualifiedName = is.getImportReference().getQualifiedName();
             if (waiteImportClass.getQualifiedName().equals(impQualifiedName)) {

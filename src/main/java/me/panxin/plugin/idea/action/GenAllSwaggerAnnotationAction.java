@@ -8,9 +8,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtilBase;
-import me.panxin.plugin.idea.utils.GeneratorUtils;
-import me.panxin.plugin.idea.utils.MyLongRunningTask;
-import me.panxin.plugin.idea.utils.POJO;
+import me.panxin.plugin.idea.utils.AddPOJOSwaggerBatchTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -31,7 +29,7 @@ public class GenAllSwaggerAnnotationAction extends AnAction {
             assert editor != null;
             assert project != null;
             PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
-            new MyLongRunningTask(project, psiFile, classesToCheck,"批量添加swagger注解").queue();
+            new AddPOJOSwaggerBatchTask(project, psiFile, classesToCheck,"批量添加swagger注解").queue();
 
 
         }

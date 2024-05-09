@@ -33,14 +33,14 @@
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <!-- Add your actions here -->
       <action class="me.panxin.plugin.idea.action.GenAllSwaggerAnnotationAction"
-              text="所有的实体类添加swagger2注解(会卡顿)"
-              description="所有的实体类添加swagger2注解(会卡顿)"
+              text="所有的实体类添加swagger2注解(耗时)"
+              description="所有的实体类添加swagger2注解(耗时)"
       >
         <keyboard-shortcut first-keystroke="control shift J"  keymap="$default"/>
       </action>
-      <action class="me.panxin.plugin.idea.action.GenAllControllerSwaggerAnnotationAction"
-              text="所有的接口添加swagger注解(会卡顿)"
-              description="所有的接口添加swagger2注解(会卡顿)"
+      <action class="me.panxin.plugin.idea.action.GenAllApiSwaggerAnnotationAction"
+              text="所有的接口添加swagger2注解(耗时)"
+              description="所有的接口添加swagger2注解(耗时)"
       >
         <keyboard-shortcut first-keystroke="control shift C"  keymap="$default"/>
       </action>
