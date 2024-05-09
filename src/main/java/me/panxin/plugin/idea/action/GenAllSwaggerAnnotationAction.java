@@ -9,6 +9,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiUtilBase;
 import me.panxin.plugin.idea.utils.GeneratorUtils;
+import me.panxin.plugin.idea.utils.MyLongRunningTask;
 import me.panxin.plugin.idea.utils.POJO;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,17 +31,9 @@ public class GenAllSwaggerAnnotationAction extends AnAction {
             assert editor != null;
             assert project != null;
             PsiFile psiFile = PsiUtilBase.getPsiFileInEditor(editor, project);
-            for (PsiClass psiClass : classesToCheck) {
+            new MyLongRunningTask(project, psiFile, classesToCheck,"批量添加swagger注解").queue();
 
-                // 判断文件是否是POJO
-                PsiFile containingFile = psiClass.getContainingFile();
-                PsiDirectory containingDirectory = containingFile.getContainingDirectory();
-                String directoryName = containingDirectory.getName();
-                if (POJO.isPOJO(directoryName, psiClass.getName())) {
-                    new GeneratorUtils(project, psiFile, psiClass, "").doGenerate();
 
-                }
-            }
         }
     }
 
