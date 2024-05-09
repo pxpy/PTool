@@ -12,13 +12,15 @@ public class AddApiSwaggerBatchTask extends Task.Backgroundable {
 
     private  final  PsiFile psiFile;
     private final  List<PsiClass> classesToCheck;
+    private final int version;
 
     private final Project project;
-    public AddApiSwaggerBatchTask(Project project, PsiFile psiFile, List<PsiClass> classesToCheck, String title) {
+    public AddApiSwaggerBatchTask(Project project, PsiFile psiFile, List<PsiClass> classesToCheck,int version,  String title) {
         super(project, title, true); // true 表示任务可以在后台运行，不会阻塞UI
         this.psiFile = psiFile;
         this.classesToCheck = classesToCheck;
         this.project= project;
+        this.version = version;
     }
 
     @Override
@@ -30,7 +32,11 @@ public class AddApiSwaggerBatchTask extends Task.Backgroundable {
             indicator.checkCanceled(); // 检查用户是否取消了任务
             // 判断文件是否是Controller
             if (GeneratorUtils.isController(psiClass)) {
-                new GeneratorUtils(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
+                if(version == 2) {
+                    new GeneratorUtils(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
+                }else{
+                    new GeneratorSwagger3(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
+                }
 
             }
         }

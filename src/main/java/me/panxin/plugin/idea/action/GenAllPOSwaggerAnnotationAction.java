@@ -8,13 +8,13 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiPackage;
 import com.intellij.psi.search.GlobalSearchScope;
-import me.panxin.plugin.idea.utils.AddApiSwaggerBatchTask;
+import me.panxin.plugin.idea.utils.AddPOJOSwaggerBatchTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenAllApiSwaggerAnnotationAction extends AnAction {
+public class GenAllPOSwaggerAnnotationAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         Project project = event.getProject();
@@ -26,7 +26,9 @@ public class GenAllApiSwaggerAnnotationAction extends AnAction {
             List<PsiClass> classesToCheck = new ArrayList<>();
             processPackage(rootPackage, searchScope, classesToCheck);
             assert project != null;
-            new AddApiSwaggerBatchTask(project, null, classesToCheck,2,"给接口批量添加swagger注解").queue();
+            new AddPOJOSwaggerBatchTask(project, null, classesToCheck,2, "批量添加swagger注解").queue();
+
+
         }
     }
 

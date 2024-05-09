@@ -32,17 +32,29 @@
     <group id="PTool" text="PTool" description="PTool" popup="true">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <!-- Add your actions here -->
-      <action class="me.panxin.plugin.idea.action.GenAllSwaggerAnnotationAction"
-              text="所有的实体类添加swagger2注解(耗时)"
+      <action class="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
+              text="所有实体类添加swagger2注解(耗时)"
               description="所有的实体类添加swagger2注解(耗时)"
       >
         <keyboard-shortcut first-keystroke="control shift J"  keymap="$default"/>
       </action>
       <action class="me.panxin.plugin.idea.action.GenAllApiSwaggerAnnotationAction"
-              text="所有的接口添加swagger2注解(耗时)"
+              text="所有接口添加swagger2注解(耗时)"
               description="所有的接口添加swagger2注解(耗时)"
       >
         <keyboard-shortcut first-keystroke="control shift C"  keymap="$default"/>
+      </action>
+      <action class="me.panxin.plugin.idea.action.GenAllPOSwagger3AnnotationAction"
+              text="所有实体类添加swagger3注解(耗时)"
+              description="所有的实体类添加swagger2注解(耗时)"
+      >
+        <keyboard-shortcut first-keystroke="control shift T"  keymap="$default"/>
+      </action>
+      <action class="me.panxin.plugin.idea.action.GenAllApiSwagger3AnnotationAction"
+              text="所有接口添加swagger3注解(耗时)"
+              description="所有的接口添加swagger2注解(耗时)"
+      >
+        <keyboard-shortcut first-keystroke="control shift F"  keymap="$default"/>
       </action>
     </group>
       <action id="me.panxin.plugin.idea.action.SwaggerTool" class="me.panxin.plugin.idea.action.SwaggerTool" text="SwaggerAnnotation 2"

@@ -15,11 +15,15 @@ public class AddPOJOSwaggerBatchTask extends Task.Backgroundable {
     private final  List<PsiClass> classesToCheck;
 
     private final Project project;
-    public AddPOJOSwaggerBatchTask(Project project, PsiFile psiFile, List<PsiClass> classesToCheck, String title) {
+
+    private final int version;
+
+    public AddPOJOSwaggerBatchTask(Project project, PsiFile psiFile, List<PsiClass> classesToCheck, int version,String title) {
         super(project, title, true); // true 表示任务可以在后台运行，不会阻塞UI
         this.psiFile = psiFile;
         this.classesToCheck = classesToCheck;
         this.project= project;
+        this.version = version;
     }
 
     @Override
@@ -35,7 +39,11 @@ public class AddPOJOSwaggerBatchTask extends Task.Backgroundable {
             PsiDirectory containingDirectory = containingFile.getContainingDirectory();
             String directoryName = containingDirectory.getName();
             if (POJO.isPOJO(directoryName, psiClass.getName())) {
-                new GeneratorUtils(project,  psiClass.getContainingFile(), psiClass, "").doGenerate();
+                if(version == 2){
+                    new GeneratorUtils(project,  psiClass.getContainingFile(), psiClass, "").doGenerate();
+                }else {
+                    new GeneratorSwagger3(project,  psiClass.getContainingFile(), psiClass, "").doGenerate();
+                }
 
             }
         }
