@@ -33,6 +33,9 @@ IDEA Plugin -Generate swagger annotation
 
 ### TODO
 1. 没有注解或者注释的，调用翻译api生成注解
+2. 多语言
+3. 配置页面
+4. swagger2注解转换为swagger3
 
 ### bug
 1. 类中有重复的文档注释，会增加两条注解

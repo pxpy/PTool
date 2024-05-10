@@ -1,11 +1,18 @@
 package me.panxin.plugin.idea.utils;
 
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationActivationListener;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiDirectory;
 import com.intellij.psi.PsiFile;
+import com.intellij.util.messages.MessageBusConnection;
+import me.panxin.plugin.idea.listener.AppActivationListener;
 
 import java.util.List;
 
@@ -24,6 +31,14 @@ public class AddPOJOSwaggerBatchTask extends Task.Backgroundable {
         this.classesToCheck = classesToCheck;
         this.project= project;
         this.version = version;
+        // 设置消息监听
+        AppActivationListener listener = new AppActivationListener();
+        Application app = ApplicationManager.getApplication();
+        Disposable disposable = Disposer.newDisposable();
+        Disposer.register(app, disposable);
+        MessageBusConnection connection = app.getMessageBus().connect(disposable);
+        connection.subscribe(ApplicationActivationListener.TOPIC, listener);
+        listener.activate();
     }
 
     @Override

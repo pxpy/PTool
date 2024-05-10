@@ -19,6 +19,7 @@ intellij {
 }
 
 dependencies {
+    implementation("com.alibaba.fastjson2:fastjson2:2.0.21")
 //    implementation("com.softwareloop:mybatis-generator-lombok-plugin:1.0")
 //    compileOnly("org.projectlombok:lombok:1.18.22")
 //    annotationProcessor("org.projectlombok:lombok:1.18.2");

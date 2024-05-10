@@ -1,10 +1,17 @@
 package me.panxin.plugin.idea.utils;
 
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationActivationListener;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
+import com.intellij.util.messages.MessageBusConnection;
+import me.panxin.plugin.idea.listener.AppActivationListener;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
@@ -48,6 +55,14 @@ public class GeneratorUtils {
         this.psiClass = psiClass;
         this.selectionText = selectionText;
         this.elementFactory = JavaPsiFacade.getElementFactory(project);
+        // 设置消息监听
+        AppActivationListener listener = new AppActivationListener();
+        Application app = ApplicationManager.getApplication();
+        Disposable disposable = Disposer.newDisposable();
+        Disposer.register(app, disposable);
+        MessageBusConnection connection = app.getMessageBus().connect(disposable);
+        connection.subscribe(ApplicationActivationListener.TOPIC, listener);
+        listener.activate();
     }
 
     public void doGenerate() {

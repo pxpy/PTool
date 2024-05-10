@@ -1,7 +1,14 @@
 package me.panxin.plugin.idea.utils;
 
+import com.intellij.openapi.Disposable;
+import com.intellij.openapi.application.Application;
+import com.intellij.openapi.application.ApplicationActivationListener;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.util.Disposer;
 import com.intellij.psi.*;
+import com.intellij.util.messages.MessageBusConnection;
+import me.panxin.plugin.idea.listener.AppActivationListener;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -33,6 +40,14 @@ public class GeneratorSwagger3 extends AbstractGenerator {
   
   public GeneratorSwagger3(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
     super(project, psiFile, psiClass, selectionText, Integer.valueOf(3));
+    // 设置消息监听
+    AppActivationListener listener = new AppActivationListener();
+    Application app = ApplicationManager.getApplication();
+    Disposable disposable = Disposer.newDisposable();
+    Disposer.register(app, disposable);
+    MessageBusConnection connection = app.getMessageBus().connect(disposable);
+    connection.subscribe(ApplicationActivationListener.TOPIC, listener);
+    listener.activate();
   }
   
   public void generateClassAnnotation(PsiClass psiClass, boolean isController) {
