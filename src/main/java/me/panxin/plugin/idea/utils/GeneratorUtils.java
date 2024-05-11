@@ -5,12 +5,14 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.util.messages.MessageBusConnection;
+import me.panxin.plugin.idea.common.util.translator.TranslatorService;
 import me.panxin.plugin.idea.listener.AppActivationListener;
 import org.apache.commons.lang.StringUtils;
 
@@ -48,6 +50,9 @@ public class GeneratorUtils {
     private final PsiClass psiClass;
     private final PsiElementFactory elementFactory;
     private final String selectionText;
+
+    private TranslatorService  translatorService = ServiceManager.getService(TranslatorService.class);
+
 
     public GeneratorUtils(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
         this.project = project;
@@ -264,6 +269,7 @@ public class GeneratorUtils {
                 // 注释的内容
                 String tmpText = classComment.getText();
                 String commentDesc = CommentUtils.getCommentDesc(tmpText);
+                commentDesc.replace("\"", "");
                 if(StringUtils.isEmpty(commentDesc)){
                     continue;
                 }
@@ -402,6 +408,7 @@ public class GeneratorUtils {
                 // 注释的内容
                 String tmpText = classComment.getText();
                 String commentDesc = CommentUtils.getCommentDesc(tmpText);
+                commentDesc.replace("\"", "");
                 if(StringUtils.isNotEmpty(commentDesc)){
                     String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",commentDesc);
                     this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
@@ -409,6 +416,8 @@ public class GeneratorUtils {
             }
         }
         if (Objects.isNull(classComment)) {
+            String name = psiField.getName();
+            String translate = translatorService.translate(name);
             // TODO 调用翻译软件api
 //            this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", "@ApiModelProperty(\"\")", psiField);
         }

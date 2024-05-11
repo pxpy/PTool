@@ -26,18 +26,8 @@ import static me.panxin.plugin.idea.enums.SwaggerAnnotation.SCHEMA;
  * @date 2024/05/09
  */
 public class GeneratorSwagger3 extends AbstractGenerator {
-  private static final String TAG_QUALIFIED_NAME = "io.swagger.v3.oas.annotations.tags.Tag";
-  
-  private static final String SCHEMA_QUALIFIED_NAME = "io.swagger.v3.oas.annotations.media.Schema";
-  
-  private static final String OPERATION_QUALIFIED_NAME = "io.swagger.v3.oas.annotations.Operation";
-  
-  private static final String PARAMETERS_QUALIFIED_NAME = "io.swagger.v3.oas.annotations.Parameters";
-  
-  private static final String PARAMETER_QUALIFIED_NAME = "io.swagger.v3.oas.annotations.Parameter";
-  
-  private static final String PARAMETER_IN_QUALIFIED_NAME = "io.swagger.v3.oas.annotations.enums.ParameterIn";
-  
+
+
   public GeneratorSwagger3(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
     super(project, psiFile, psiClass, selectionText, Integer.valueOf(3));
     // 设置消息监听
@@ -58,6 +48,7 @@ public class GeneratorSwagger3 extends AbstractGenerator {
         classComment = (PsiComment)tmpEle;
         String tmpText = classComment.getText();
         String commentDesc = CommentUtils.getCommentDesc(tmpText);
+        commentDesc.replace("\"", "");
         if(StringUtils.isEmpty(commentDesc)){
           continue;
         }
@@ -185,6 +176,10 @@ public class GeneratorSwagger3 extends AbstractGenerator {
         classComment = (PsiComment)tmpEle;
         String tmpText = classComment.getText();
         String commentDesc = CommentUtils.getCommentDesc(tmpText);
+        commentDesc.replace("\"", "");
+        if(StringUtils.isEmpty(commentDesc)){
+          continue;
+        }
         if (isValidate) {
           apiModelPropertyText = String.format("@Schema(description=\"%s\", requiredMode = Schema.RequiredMode.REQUIRED)", new Object[] { commentDesc });
         } else {
@@ -193,7 +188,9 @@ public class GeneratorSwagger3 extends AbstractGenerator {
         doWrite("Schema", SCHEMA.getQualifiedName(), apiModelPropertyText, (PsiModifierListOwner)psiField);
       } 
     } 
-    if (Objects.isNull(classComment))
-      doWrite("Schema", SCHEMA.getQualifiedName(), "@Schema(hidden = true)", (PsiModifierListOwner)psiField);
+    if (Objects.isNull(classComment)){
+      return;
+//      doWrite("Schema", SCHEMA.getQualifiedName(), "@Schema(hidden = true)", (PsiModifierListOwner)psiField);
+    }
   }
 }

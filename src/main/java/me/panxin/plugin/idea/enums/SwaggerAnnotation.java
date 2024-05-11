@@ -20,6 +20,7 @@ public enum SwaggerAnnotation {
     APIMODELPROPERTY("io.swagger.annotations.ApiModelProperty"),
     SCHEMA("io.swagger.v3.oas.annotations.media.Schema"),
     PARAMETER("io.swagger.v3.oas.annotations.Parameter"),
+    PARAMETERS("io.swagger.v3.oas.annotations.Parameters"),
     PARAMETERIN("io.swagger.v3.oas.annotations.enums.ParameterIn"),
     OPERATION("io.swagger.v3.oas.annotations.Operation"),
     TAG("io.swagger.v3.oas.annotations.tags.Tag");
