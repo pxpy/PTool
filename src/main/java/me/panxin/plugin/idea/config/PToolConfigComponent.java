@@ -1,16 +1,16 @@
 package me.panxin.plugin.idea.config;
 
-import java.util.Objects;
-
 import com.google.common.collect.Maps;
 import com.intellij.openapi.components.PersistentStateComponent;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import me.panxin.plugin.idea.common.util.translator.Consts;
+import me.panxin.plugin.idea.config.PToolConfig.TemplateConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import me.panxin.plugin.idea.config.PToolConfig.TemplateConfig;
+
+import java.util.Objects;
 
 /**
  * @author wangchao
@@ -37,7 +37,7 @@ public class PToolConfigComponent implements PersistentStateComponent<PToolConfi
             config.setMethodReturnType(PToolConfig.LINK_RETURN_TYPE);
             config.setWordMap(Maps.newTreeMap());
             config.setProjectWordMap(Maps.newTreeMap());
-            config.setTranslator(Consts.YOUDAO_TRANSLATOR);
+            config.setTranslator(Consts.MICROSOFT_FREE_TRANSLATOR);
             config.setClassTemplateConfig(new TemplateConfig());
             config.setKdocClassTemplateConfig(new TemplateConfig());
             config.setMethodTemplateConfig(new TemplateConfig());

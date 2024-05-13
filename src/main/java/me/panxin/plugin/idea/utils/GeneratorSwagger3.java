@@ -4,10 +4,12 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.psi.*;
 import com.intellij.util.messages.MessageBusConnection;
+import me.panxin.plugin.idea.common.util.translator.TranslatorService;
 import me.panxin.plugin.idea.listener.AppActivationListener;
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,6 +28,8 @@ import static me.panxin.plugin.idea.enums.SwaggerAnnotation.SCHEMA;
  * @date 2024/05/09
  */
 public class GeneratorSwagger3 extends AbstractGenerator {
+
+  private TranslatorService translatorService = ServiceManager.getService(TranslatorService.class);
 
 
   public GeneratorSwagger3(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
@@ -65,17 +69,18 @@ public class GeneratorSwagger3 extends AbstractGenerator {
       } 
     } 
     if (Objects.isNull(classComment)) {
+      String translate = translatorService.translate(psiClass.getName());
       String annotationFromText, annotation, qualifiedName;
       if (isController) {
         annotation = "Tag";
         qualifiedName = "io.swagger.v3.oas.annotations.tags.Tag";
-        annotationFromText = String.format("@%s(name = \"%s\")", new Object[] { annotation, "" });
+        annotationFromText = String.format("@%s(name = \"%s\")", new Object[] { annotation, translate });
       } else {
         annotation = "Schema";
         qualifiedName = "io.swagger.v3.oas.annotations.media.Schema";
-        annotationFromText = String.format("@%s", new Object[] { annotation });
+        annotationFromText = String.format("@%s(description = \"%s\")", new Object[] { annotation,translate });
       } 
-//      doWrite(annotation, qualifiedName, annotationFromText, (PsiModifierListOwner)psiClass);
+      doWrite(annotation, qualifiedName, annotationFromText, (PsiModifierListOwner)psiClass);
     } 
   }
   
@@ -189,8 +194,14 @@ public class GeneratorSwagger3 extends AbstractGenerator {
       } 
     } 
     if (Objects.isNull(classComment)){
-      return;
-//      doWrite("Schema", SCHEMA.getQualifiedName(), "@Schema(hidden = true)", (PsiModifierListOwner)psiField);
+      String translate = translatorService.translate(psiField.getName());
+      String apiModelPropertyText;
+      if (isValidate) {
+        apiModelPropertyText = String.format("@Schema(description=\"%s\", requiredMode = Schema.RequiredMode.REQUIRED)", new Object[] { translate });
+      } else {
+        apiModelPropertyText = String.format("@Schema(description=\"%s\")", new Object[] { translate });
+      }
+      doWrite("Schema", SCHEMA.getQualifiedName(), apiModelPropertyText, (PsiModifierListOwner)psiField);
     }
   }
 }

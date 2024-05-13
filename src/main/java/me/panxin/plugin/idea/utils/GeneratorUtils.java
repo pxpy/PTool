@@ -290,6 +290,7 @@ public class GeneratorUtils {
             }
         }
         if (Objects.isNull(classComment)) {
+            String translate = translatorService.translate(psiClass.getName());
             String annotationFromText;
             String annotation;
             String qualifiedName;
@@ -297,14 +298,13 @@ public class GeneratorUtils {
                 annotation = "Api";
                 qualifiedName = "io.swagger.annotations.Api";
                 String fieldValue = this.getMappingAttribute(psiClass.getModifierList().getAnnotations(), MAPPING_VALUE);
-                annotationFromText = String.format("@%s(value = %s)",annotation,fieldValue);
+                annotationFromText = String.format("@%s(value = %s, tags = {\"%s\"})",annotation,fieldValue,translate);
             } else {
                 annotation = "ApiModel";
                 qualifiedName = "io.swagger.annotations.ApiModel";
-                annotationFromText = String.format("@%s", annotation);
+                annotationFromText = String.format("@%s(description = \"%s\")", annotation, translate);
             }
-            // TODO 调用翻译api
-//            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
         }
     }
 
@@ -418,8 +418,8 @@ public class GeneratorUtils {
         if (Objects.isNull(classComment)) {
             String name = psiField.getName();
             String translate = translatorService.translate(name);
-            // TODO 调用翻译软件api
-//            this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", "@ApiModelProperty(\"\")", psiField);
+            String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",translate);
+            this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
         }
     }
 

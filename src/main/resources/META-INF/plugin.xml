@@ -1,11 +1,11 @@
 <idea-plugin>
   <id>me.panxin.plugin.idea.PTool</id>
   <name>PTool</name>
-  <version>1.1.0</version>
+  <version>1.2.0</version>
   <vendor>Pan Xin</vendor>
 
   <description><![CDATA[
-      an idea devtool.<br>
+      An IntelliJ IDEA plugin that enhances developer productivity.<br>
       To enhance the entire project with Swagger annotations for both controllers and entity classes,<br>
        an IDE plugin named "Generate Swagger Annotation" can be conceptualized as follows:Key Features:<br>
        1. Annotation Detection and Generation Based on Annotation Presence:•Automatically inspects the target class.<br>
