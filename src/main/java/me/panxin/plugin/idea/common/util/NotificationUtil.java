@@ -28,7 +28,7 @@ public class NotificationUtil {
      * @param actions 动作
      */
     public static void notify(String title, String content, AnAction... actions) {
-        NotificationGroup group = new NotificationGroup("Easy Javadoc", NotificationDisplayType.BALLOON, true, null,
+        NotificationGroup group = new NotificationGroup("PTool", NotificationDisplayType.BALLOON, true, null,
             General.AddJdk);
         Notification notification = group.createNotification(
             title, content,
