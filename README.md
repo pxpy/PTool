@@ -2,11 +2,17 @@
 ## 注意
 所有功能需要在idea建立索引以后,可以使用前菜单会置灰或者隐藏
 
+![index](./doc/common/indexing.jpg)
+
 ## 安装
+
 ### 方法一
 在插件市场搜索PTool
+![index](./doc/common/install.png)
+
 ### 方法二
 在release中下载zip文件，本地安装
+![index](./doc/common/installformzip.png)
 
 ## 1. swagger-annotation-generator
 可以为整个项目的controller和实体类增添swagger注解

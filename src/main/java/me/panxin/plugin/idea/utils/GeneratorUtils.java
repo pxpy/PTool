@@ -262,6 +262,7 @@ public class GeneratorUtils {
         if(hasSwaggerAnnotation(psiClass)){
             return;
         }
+        int num = 0;
         PsiComment classComment = null;
         for (PsiElement tmpEle : psiClass.getChildren()) {
             if (tmpEle instanceof PsiComment){
@@ -271,7 +272,11 @@ public class GeneratorUtils {
                 String commentDesc = CommentUtils.getCommentDesc(tmpText);
                 commentDesc.replace("\"", "");
                 if(StringUtils.isEmpty(commentDesc)){
-                    continue;
+                    commentDesc = translatorService.translate(psiClass.getName());
+                }
+                // 有些类里面会有多条注释
+                if(++num>1){
+                    break;
                 }
                 String annotationFromText;
                 String annotation;
