@@ -46,6 +46,7 @@ public class GeneratorSwagger3 extends AbstractGenerator {
   
   public void generateClassAnnotation(PsiClass psiClass, boolean isController) {
     PsiComment classComment = null;
+    int num = 0;
     for (PsiElement tmpEle : psiClass.getChildren()) {
       if (tmpEle instanceof PsiComment) {
         String annotationFromText, annotation, qualifiedName;
@@ -54,8 +55,13 @@ public class GeneratorSwagger3 extends AbstractGenerator {
         String commentDesc = CommentUtils.getCommentDesc(tmpText);
         commentDesc.replace("\"", "");
         if(StringUtils.isEmpty(commentDesc)){
-          continue;
+          commentDesc = translatorService.translate(psiClass.getName());
         }
+        // 有些类里面会有多条注释
+        if(++num>1){
+          break;
+        }
+
         if (isController) {
           annotation = "Tag";
           qualifiedName = "io.swagger.v3.oas.annotations.tags.Tag";
