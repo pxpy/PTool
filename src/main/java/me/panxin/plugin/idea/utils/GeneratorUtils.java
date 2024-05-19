@@ -61,7 +61,7 @@ public class GeneratorUtils {
         this.selectionText = selectionText;
         this.elementFactory = JavaPsiFacade.getElementFactory(project);
         // 设置消息监听
-        AppActivationListener listener = new AppActivationListener();
+        AppActivationListener listener =  AppActivationListener.getInstance();
         Application app = ApplicationManager.getApplication();
         Disposable disposable = Disposer.newDisposable();
         Disposer.register(app, disposable);

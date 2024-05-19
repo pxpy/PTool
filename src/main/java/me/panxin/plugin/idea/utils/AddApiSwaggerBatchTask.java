@@ -29,7 +29,7 @@ public class AddApiSwaggerBatchTask extends Task.Backgroundable {
         this.project= project;
         this.version = version;
         // 设置消息监听
-        AppActivationListener listener = new AppActivationListener();
+        AppActivationListener listener = AppActivationListener.getInstance();
         Application app = ApplicationManager.getApplication();
         Disposable disposable = Disposer.newDisposable();
         Disposer.register(app, disposable);

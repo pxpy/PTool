@@ -35,7 +35,7 @@ public class GeneratorSwagger3 extends AbstractGenerator {
   public GeneratorSwagger3(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
     super(project, psiFile, psiClass, selectionText, Integer.valueOf(3));
     // 设置消息监听
-    AppActivationListener listener = new AppActivationListener();
+    AppActivationListener listener = AppActivationListener.getInstance();
     Application app = ApplicationManager.getApplication();
     Disposable disposable = Disposer.newDisposable();
     Disposer.register(app, disposable);
