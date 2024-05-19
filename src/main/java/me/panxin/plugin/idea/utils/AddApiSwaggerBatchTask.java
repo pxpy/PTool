@@ -4,6 +4,7 @@ import com.intellij.openapi.Disposable;
 import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.progress.ProgressIndicator;
 import com.intellij.openapi.progress.Task;
 import com.intellij.openapi.project.Project;
@@ -13,6 +14,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.util.messages.MessageBusConnection;
 import me.panxin.plugin.idea.listener.AppActivationListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddApiSwaggerBatchTask extends Task.Backgroundable {
@@ -41,20 +43,37 @@ public class AddApiSwaggerBatchTask extends Task.Backgroundable {
     @Override
     public void run(ProgressIndicator indicator) {
         // 在这里执行你的长任务
-        int i = 0;
-        for (PsiClass psiClass : classesToCheck) {
-            indicator.setFraction((double) i / classesToCheck.size()); // 更新进度条
-            indicator.checkCanceled(); // 检查用户是否取消了任务
-            // 判断文件是否是Controller
-            if (GeneratorUtils.isController(psiClass)) {
-                if(version == 2) {
-                    new GeneratorUtils(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
-                }else{
-                    new GeneratorSwagger3(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
+        List<PsiClass> apiClassList= new ArrayList<>();
+        ApplicationManager.getApplication().runReadAction(()->{
+            int i = 0;
+            for (PsiClass psiClass : classesToCheck) {
+                indicator.setFraction((double) i / classesToCheck.size()); // 更新进度条
+                indicator.checkCanceled(); // 检查用户是否取消了任务
+                // 判断文件是否是Controller
+                if (GeneratorUtils.isController(psiClass)) {
+                    apiClassList.add(psiClass);
                 }
-
             }
-        }
+        });
+
+        ApplicationManager.getApplication().invokeLater(() -> WriteCommandAction.runWriteCommandAction(null, () -> {
+            // 写入操作代码
+            int i = 0;
+            for (PsiClass psiClass : apiClassList) {
+                indicator.setFraction((double) i / classesToCheck.size()); // 更新进度条
+                indicator.checkCanceled(); // 检查用户是否取消了任务
+                try {
+                    if(version == 2) {
+                        new GeneratorUtils(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
+                    }else{
+                        new GeneratorSwagger3(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }));
+
 
     }
 

@@ -105,7 +105,10 @@ public class GeneratorUtils {
                 // 类属性列表
                 PsiField[] field = psiClass.getAllFields();
                 for (PsiField psiField : field) {
-                    this.generateFieldAnnotation(psiField);
+                    // 如果字段的包含类就是 psiClass 本身，说明它不是继承的
+                    if (psiField.getContainingClass().equals(psiClass)) {
+                        this.generateFieldAnnotation(psiField);
+                    }
                 }
             }
         });
