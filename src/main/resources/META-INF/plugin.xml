@@ -43,6 +43,11 @@
     <group id="PTool" text="PTool" description="PTool" popup="true">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <!-- Add your actions here -->
+      <action id="me.panxin.plugin.idea.action.GenSwaggerBatchAction"
+              class="me.panxin.plugin.idea.action.GenSwaggerBatchAction"
+      >
+        <keyboard-shortcut first-keystroke="control shift Y"  keymap="$default"/>
+      </action>
       <action id="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
               class="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
       >
