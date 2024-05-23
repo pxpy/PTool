@@ -1,4 +1,7 @@
 # PTool
+![logo](./src/main/resources/META-INF/pluginIcon.svg)
+[开发文档](./doc/README_DEV.md)
+
 ## 注意
 所有功能需要在idea建立索引以后,可以使用前菜单会置灰或者隐藏
 
@@ -41,20 +44,3 @@ IDEA Plugin -Generate swagger annotation
 ### 使用方法
 1. 单个类，右键generate-SwaggerAnnotation
 2. 批量生成，菜单栏-tool-PTool
-
-
-### TODO
-1. 没有注解或者注释的，调用翻译api生成注解
-2. 多语言
-3. 配置页面
-4. swagger2注解转换为swagger3
-
-### bug
-1. 类中有重复的文档注释，会增加两条注解
-2. 注释中有双引号有问题
-
-## 本地开发
-jdk 17
-gradle
-启用项目
-Tasks--intellij--runIde

@@ -38,46 +38,40 @@
   <depends>com.intellij.modules.platform</depends>
   <depends>com.intellij.modules.java</depends>
 
-
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-  </extensions>
-
+  <resource-bundle>META-INF.messages.BasicActionsBundle</resource-bundle>
   <actions>
     <group id="PTool" text="PTool" description="PTool" popup="true">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <!-- Add your actions here -->
-      <action class="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
-              text="所有实体类添加swagger2注解(耗时)"
-              description="所有的实体类添加swagger2注解(耗时)"
+      <action id="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
+              class="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
       >
         <keyboard-shortcut first-keystroke="control shift J"  keymap="$default"/>
       </action>
-      <action class="me.panxin.plugin.idea.action.GenAllApiSwaggerAnnotationAction"
-              text="所有接口添加swagger2注解(耗时)"
-              description="所有的接口添加swagger2注解(耗时)"
+      <action id="me.panxin.plugin.idea.action.GenAllApiSwaggerAnnotationAction"
+              class="me.panxin.plugin.idea.action.GenAllApiSwaggerAnnotationAction"
       >
         <keyboard-shortcut first-keystroke="control shift C"  keymap="$default"/>
       </action>
-      <action class="me.panxin.plugin.idea.action.GenAllPOSwagger3AnnotationAction"
-              text="所有实体类添加swagger3注解(耗时)"
-              description="所有的实体类添加swagger2注解(耗时)"
+      <action id = "me.panxin.plugin.idea.action.GenAllPOSwagger3AnnotationAction"
+              class="me.panxin.plugin.idea.action.GenAllPOSwagger3AnnotationAction"
       >
         <keyboard-shortcut first-keystroke="control shift T"  keymap="$default"/>
       </action>
-      <action class="me.panxin.plugin.idea.action.GenAllApiSwagger3AnnotationAction"
-              text="所有接口添加swagger3注解(耗时)"
-              description="所有的接口添加swagger2注解(耗时)"
+      <action id="me.panxin.plugin.idea.action.GenAllApiSwagger3AnnotationAction"
+              class="me.panxin.plugin.idea.action.GenAllApiSwagger3AnnotationAction"
       >
         <keyboard-shortcut first-keystroke="control shift F"  keymap="$default"/>
       </action>
     </group>
-      <action id="me.panxin.plugin.idea.action.SwaggerTool" class="me.panxin.plugin.idea.action.SwaggerTool" text="SwaggerAnnotation 2"
-              description="Generate swagger2 annotation">
+      <action id="me.panxin.plugin.idea.action.SwaggerTool"
+              class="me.panxin.plugin.idea.action.SwaggerTool"
+              >
           <add-to-group group-id="GenerateGroup" anchor="first"/>
 
       </action>
-    <action id="me.panxin.plugin.idea.action.SwaggerTool3" class="me.panxin.plugin.idea.action.SwaggerTool3" text="SwaggerAnnotation 3" description="Generate swagger annotation 3.x">
+    <action id="me.panxin.plugin.idea.action.SwaggerTool3"
+            class="me.panxin.plugin.idea.action.SwaggerTool3">
       <add-to-group group-id="GenerateGroup" anchor="first" />
     </action>
   </actions>

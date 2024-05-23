@@ -80,6 +80,19 @@ public class CommentUtils {
         }
         return StringUtils.trim(stringBuilder.toString());
     }
+
+    /**
+     * 移除注释中不合法的字母
+     *
+     * @param inputSting 输入刺痛
+     * @return {@link String}
+     */
+    public static String formateAnnotation(String inputSting) {
+        String output = inputSting.replace("\"", "");
+        output = output.replace("(", "");
+        output= output.replace(")", "");
+        return output;
+    }
     /**
      * 获取注解说明  不写/@desc/@describe/@description
      * @param comment 所有注释

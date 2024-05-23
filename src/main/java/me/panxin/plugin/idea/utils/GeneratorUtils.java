@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static me.panxin.plugin.idea.enums.SwaggerAnnotation.*;
+import static me.panxin.plugin.idea.utils.CommentUtils.formateAnnotation;
 
 /**
  * 生成器实用程序
@@ -416,7 +417,7 @@ public class GeneratorUtils {
                 // 注释的内容
                 String tmpText = classComment.getText();
                 String commentDesc = CommentUtils.getCommentDesc(tmpText);
-                commentDesc.replace("\"", "");
+                commentDesc = formateAnnotation(commentDesc);
                 if(StringUtils.isNotEmpty(commentDesc)){
                     String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",commentDesc);
                     this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
