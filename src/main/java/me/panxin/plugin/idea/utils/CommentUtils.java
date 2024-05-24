@@ -53,7 +53,15 @@ public class CommentUtils {
         StringBuilder stringBuilder = new StringBuilder();
         for (String string : strings) {
             String row = StringUtils.deleteWhitespace(string);
-            if (StringUtils.isEmpty(row) || StringUtils.startsWith(row,"/**")) {
+            if (StringUtils.startsWith(row, "/**") && row.length()>3) {
+                String content = row.substring(3, row.length() - 2).trim();
+                if (!content.isEmpty()) {
+                    stringBuilder.append(content);
+                }
+                continue;
+            }
+
+            if (StringUtils.isEmpty(row) || StringUtils.startsWith(row,"/*") || StringUtils.startsWith(row,"*/")) {
                 continue;
             }
             if (StringUtils.startsWithIgnoreCase(row,"*@desc")
