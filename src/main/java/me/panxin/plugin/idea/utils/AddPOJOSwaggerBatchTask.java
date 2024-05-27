@@ -64,8 +64,7 @@ public class AddPOJOSwaggerBatchTask extends Task.Backgroundable {
                 // 判断文件是否是POJO
                 PsiFile containingFile = psiClass.getContainingFile();
                 PsiDirectory containingDirectory = containingFile.getContainingDirectory();
-                String directoryName = containingDirectory.getName();
-                if (POJO.isPOJO(directoryName, psiClass.getName())) {
+                if (POJO.isPOJO(containingDirectory, psiClass.getName())) {
                     pojoList.add(psiClass);
                 }
             }
