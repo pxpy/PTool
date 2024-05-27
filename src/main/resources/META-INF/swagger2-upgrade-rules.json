@@ -1,0 +1,50 @@
+[
+  {
+    "pattern": "@Api\\(value = (.*), tags = (.*)\\)",
+    "replacement": "@Tag(name= $2, description= $1)"
+  },
+  {
+    "pattern": "@ApiOperation\\(value = (.*), notes = (.*)\\)",
+    "replacement": "@Operation(summary = $1, description = $2)"
+  },
+  {
+    "pattern": "@ApiOperation\\((.*)\\)",
+    "replacement": "@Operation(summary = $1, description = $2)"
+  },
+  {
+    "pattern": "@ApiModelProperty\\(\\\"(.*?)\\\"\\)",
+    "replacement": "@Schema(description = \\\"$1\\\")"
+  },
+  {
+    "pattern": "import io.swagger.annotations.ApiModelProperty;",
+    "replacement": "import io.swagger.v3.oas.annotations.media.Schema;"
+  },
+  {
+    "pattern": "@ApiModel\\(description = \\\"(.*?)\\\"\\)",
+    "replacement": "@Schema(description = \\\"$1\\\")"
+  },
+  {
+    "pattern": "import io.swagger.annotations.ApiModel;",
+    "replacement": "import io.swagger.v3.oas.annotations.media.Schema;"
+  },
+  {
+    "pattern": "import io.swagger.annotations.*;",
+    "replacement": "import io.swagger.v3.oas.annotations.*;"
+  },
+  {
+    "pattern": "import io.swagger.annotations.ApiParam;",
+    "replacement": "import io.swagger.v3.oas.annotations.Parameter;"
+  },
+  {
+    "pattern": "import io.swagger.annotations.ApiResponse;",
+    "replacement": "import io.swagger.v3.oas.annotations.responses.ApiResponse;"
+  },
+  {
+    "pattern": "import io.swagger.annotations.ApiOperation;",
+    "replacement": "import io.swagger.v3.oas.annotations.Operation;"
+  },
+  {
+    "pattern": "import io.swagger.annotations.Api;",
+    "replacement": "import io.swagger.v3.oas.annotations.tags.Tag;"
+  }
+]
