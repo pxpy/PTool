@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.panxin.plugin.idea.PTool</id>
   <name>PTool</name>
-  <version>1.2.2</version>
+  <version>1.3.0</version>
   <vendor>Pan Xin</vendor>
 
   <description><![CDATA[
@@ -43,16 +43,16 @@
     <group id="PTool" text="PTool" description="PTool" popup="true">
       <add-to-group group-id="ToolsMenu" anchor="first"/>
       <!-- Add your actions here -->
-      <action id="me.panxin.plugin.idea.action.Allwagger2AnnotationUpgradeAction"
-              class="me.panxin.plugin.idea.action.Allwagger2AnnotationUpgradeAction"
-      >
-        <keyboard-shortcut first-keystroke="control shift 3"  keymap="$default"/>
-      </action>
-      <action id="me.panxin.plugin.idea.action.GenSwaggerBatchAction"
-              class="me.panxin.plugin.idea.action.GenSwaggerBatchAction"
-      >
-        <keyboard-shortcut first-keystroke="control shift Y"  keymap="$default"/>
-      </action>
+<!--      <action id="me.panxin.plugin.idea.action.Allwagger2AnnotationUpgradeAction"-->
+<!--              class="me.panxin.plugin.idea.action.Allwagger2AnnotationUpgradeAction"-->
+<!--      >-->
+<!--        <keyboard-shortcut first-keystroke="control shift 3"  keymap="$default"/>-->
+<!--      </action>-->
+<!--      <action id="me.panxin.plugin.idea.action.GenSwaggerBatchAction"-->
+<!--              class="me.panxin.plugin.idea.action.GenSwaggerBatchAction"-->
+<!--      >-->
+<!--        <keyboard-shortcut first-keystroke="control shift Y"  keymap="$default"/>-->
+<!--      </action>-->
       <action id="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
               class="me.panxin.plugin.idea.action.GenAllPOSwaggerAnnotationAction"
       >
