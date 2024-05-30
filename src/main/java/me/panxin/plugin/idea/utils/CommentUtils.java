@@ -1,10 +1,19 @@
 package me.panxin.plugin.idea.utils;
 
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.psi.PsiComment;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiModifierListOwner;
 import com.intellij.psi.PsiType;
+import me.panxin.plugin.idea.common.util.translator.TranslatorService;
+import me.panxin.plugin.idea.config.PToolConfig;
+import me.panxin.plugin.idea.config.PToolConfigComponent;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+import java.util.regex.Pattern;
 
 /**
  * 注释实用程序
@@ -14,6 +23,15 @@ import java.util.Map;
  */
 public class CommentUtils {
 
+    // 静态属性，存储编译后的正则表达式
+    private static final Pattern START_WITH_LETTER_OR_SPACE_PATTERN = Pattern.compile("^[a-zA-Z\\s]");
+    private static PToolConfig config;
+    private static TranslatorService translatorService = ServiceManager.getService(TranslatorService.class);
+
+    {
+        PToolConfig config = ServiceManager.getService(PToolConfigComponent.class).getState();
+        CommentUtils.config = config;
+    }
 
     public static String getDataType(String dataType, PsiType psiType) {
         String typeName = BaseTypeEnum.findByName(dataType);
@@ -90,6 +108,43 @@ public class CommentUtils {
     }
 
     /**
+     * 查找评论描述或翻译
+     *
+     * @param psiClass psi级
+     * @return {@link String}
+     */
+    public static String findCommentDescriptionOrTranslate(PsiModifierListOwner psiClass, String className) {
+        PsiComment classComment = null;
+        String commentDesc = null;
+        for (PsiElement tmpEle : psiClass.getChildren()) {
+            if (tmpEle instanceof PsiComment){
+                classComment = (PsiComment) tmpEle;
+                // 注释的内容
+                String tmpText = classComment.getText();
+                commentDesc = CommentUtils.getCommentDesc(tmpText);
+                commentDesc.replace("\"", "");
+                if(StringUtils.isEmpty(commentDesc)){
+                    commentDesc = translatorService.translate(className);
+                }
+                // 有些类里面会有多条注释
+                break;
+
+            }
+        }
+        if (Objects.isNull(classComment)) {
+            commentDesc = translatorService.translate(className);
+        }
+        if(CommentUtils.isStartWithLetterOrSpace(commentDesc)){
+            if(config == null){
+                PToolConfig config = ServiceManager.getService(PToolConfigComponent.class).getState();
+                CommentUtils.config = config;
+            }
+            commentDesc = config.getChinesePrefix()+ commentDesc;
+        }
+        return commentDesc;
+    }
+
+    /**
      * 移除注释中不合法的字母
      *
      * @param inputSting 输入刺痛
@@ -147,6 +202,21 @@ public class CommentUtils {
         descIndex += index;
         String desc = string.substring(descIndex);
         stringBuilder.append(desc);
+    }
+
+    /**
+     * 判断字符串是否以英文字母或空格开头。
+     *
+     * @param str 待检查的字符串
+     * @return 如果字符串以英文字母或空格开头，返回 true；否则返回 false
+     */
+    public static boolean isStartWithLetterOrSpace(String str) {
+        if (str == null || str.isEmpty()) {
+            return false;
+        }
+
+        // 使用静态Pattern对象来检查字符串是否符合正则表达式
+        return START_WITH_LETTER_OR_SPACE_PATTERN.matcher(str).find();
     }
 
     /**

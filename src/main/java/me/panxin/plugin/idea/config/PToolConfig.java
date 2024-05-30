@@ -37,6 +37,8 @@ public class PToolConfig {
     /** 仅翻译 */
     public static final String ONLY_TRANSLATE = "onlyTranslate";
 
+    private String chinesePrefix = "数据";
+
     /** 版本 */
     private String version;
 
@@ -609,5 +611,13 @@ public class PToolConfig {
 
     public void setDocPriority(String docPriority) {
         this.docPriority = docPriority;
+    }
+
+    public String getChinesePrefix() {
+        return chinesePrefix;
+    }
+
+    public void setChinesePrefix(String chinesePrefix) {
+        this.chinesePrefix = chinesePrefix;
     }
 }

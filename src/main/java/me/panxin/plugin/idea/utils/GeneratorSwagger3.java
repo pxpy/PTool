@@ -44,57 +44,29 @@ public class GeneratorSwagger3 extends AbstractGenerator {
     listener.activate();
   }
   
+  @Override
   public void generateClassAnnotation(PsiClass psiClass, boolean isController) {
-    PsiComment classComment = null;
-    int num = 0;
-    for (PsiElement tmpEle : psiClass.getChildren()) {
-      if (tmpEle instanceof PsiComment) {
-        String annotationFromText, annotation, qualifiedName;
-        classComment = (PsiComment)tmpEle;
-        String tmpText = classComment.getText();
-        String commentDesc = CommentUtils.getCommentDesc(tmpText);
-        commentDesc.replace("\"", "");
-        if(StringUtils.isEmpty(commentDesc)){
-          commentDesc = translatorService.translate(psiClass.getName());
-        }
-        // 有些类里面会有多条注释
-        if(++num>1){
-          break;
-        }
-
-        if (isController) {
-          annotation = "Tag";
-          qualifiedName = "io.swagger.v3.oas.annotations.tags.Tag";
-          annotationFromText = String.format("@%s(name = \"%s\", description = \"%s\")", new Object[] { annotation, commentDesc, commentDesc });
-        } else {
-          annotation = "Schema";
-          qualifiedName = "io.swagger.v3.oas.annotations.media.Schema";
-          annotationFromText = String.format("@%s(description = \"%s\")", new Object[] { annotation, commentDesc });
-        } 
-        doWrite(annotation, qualifiedName, annotationFromText, (PsiModifierListOwner)psiClass);
-      } 
-    } 
-    if (Objects.isNull(classComment)) {
-      String translate = translatorService.translate(psiClass.getName());
-      String annotationFromText, annotation, qualifiedName;
-      if (isController) {
-        annotation = "Tag";
-        qualifiedName = "io.swagger.v3.oas.annotations.tags.Tag";
-        annotationFromText = String.format("@%s(name = \"%s\")", new Object[] { annotation, translate });
-      } else {
-        annotation = "Schema";
-        qualifiedName = "io.swagger.v3.oas.annotations.media.Schema";
-        annotationFromText = String.format("@%s(description = \"%s\")", new Object[] { annotation,translate });
-      } 
-      doWrite(annotation, qualifiedName, annotationFromText, (PsiModifierListOwner)psiClass);
-    } 
+    String commentDesc = CommentUtils.findCommentDescriptionOrTranslate(psiClass,psiClass.getName());
+    String annotationFromText, annotation, qualifiedName;
+    if (isController) {
+      annotation = "Tag";
+      qualifiedName = "io.swagger.v3.oas.annotations.tags.Tag";
+      annotationFromText = String.format("@%s(name = \"%s\", description = \"%s\")", new Object[] { annotation, commentDesc, commentDesc });
+    } else {
+      annotation = "Schema";
+      qualifiedName = "io.swagger.v3.oas.annotations.media.Schema";
+      annotationFromText = String.format("@%s(description = \"%s\")", new Object[] { annotation, commentDesc });
+    }
+    doWrite(annotation, qualifiedName, annotationFromText, (PsiModifierListOwner)psiClass);
   }
   
+  @Override
   public void generateMethodAnnotation(PsiMethod psiMethod) {
     PsiAnnotation[] psiAnnotations = psiMethod.getModifierList().getAnnotations();
     String methodValue = getMappingAttribute(psiAnnotations, "method");
-    if (StringUtils.isBlank(methodValue))
-      return; 
+    if (StringUtils.isBlank(methodValue)) {
+        return;
+    }
     String commentDesc = "";
     Map<String, String> methodParamCommentDesc = null;
     for (PsiElement tmpEle : psiMethod.getChildren()) {
@@ -118,8 +90,9 @@ public class GeneratorSwagger3 extends AbstractGenerator {
       String required = "";
       String value = null;
       for (PsiAnnotation psiAnnotation : psiParameter.getModifierList().getAnnotations()) {
-        if (StringUtils.isEmpty(psiAnnotation.getQualifiedName()))
-          break; 
+        if (StringUtils.isEmpty(psiAnnotation.getQualifiedName())) {
+            break;
+        }
         switch (psiAnnotation.getQualifiedName()) {
           case "org.springframework.web.bind.annotation.RequestHeader":
             paramType = "ParameterIn.HEADER";
@@ -141,12 +114,14 @@ public class GeneratorSwagger3 extends AbstractGenerator {
         value = getAttribute(psiAnnotation, "value");
       } 
       if (!"body".equals(paramType)) {
-        if (Objects.equals(dataType, "file"))
-          paramType = "ParameterIn.QUERY"; 
+        if (Objects.equals(dataType, "file")) {
+            paramType = "ParameterIn.QUERY";
+        }
         if (!StringUtils.isEmpty(paramType)) {
           String apiImplicitParamText, paramDesc = "";
-          if (methodParamCommentDesc != null)
-            paramDesc = methodParamCommentDesc.get(psiParameter.getNameIdentifier().getText()); 
+          if (methodParamCommentDesc != null) {
+              paramDesc = methodParamCommentDesc.get(psiParameter.getNameIdentifier().getText());
+          }
           System.out.println("value:" + value);
           System.out.println("psiParameter.getNameIdentifier().getText():" + psiParameter.getNameIdentifier().getText());
           if (Objects.equals(required, "false")) {
@@ -161,8 +136,9 @@ public class GeneratorSwagger3 extends AbstractGenerator {
       } 
     } 
     doWrite("Operation", "io.swagger.v3.oas.annotations.Operation", apiOperationAnnotationText, (PsiModifierListOwner)psiMethod);
-    if (parameterList.size() == 0)
-      return; 
+    if (parameterList.size() == 0) {
+        return;
+    }
     if (parameterList.size() == 1) {
       doWrite("Parameter", "io.swagger.v3.oas.annotations.Parameter", parameterList.get(0), (PsiModifierListOwner)psiMethod);
     } else {
@@ -173,41 +149,22 @@ public class GeneratorSwagger3 extends AbstractGenerator {
     addImport(this.psiFile, "ParameterIn", "io.swagger.v3.oas.annotations.enums.ParameterIn");
   }
   
+  @Override
   public void doGenerateFieldAnnotation0(PsiField psiField, int position) {
     if (psiField.getModifierList() != null) {
       boolean hasAnnotation = psiField.getModifierList().hasAnnotation("io.swagger.v3.oas.annotations.media.Schema");
-      if (hasAnnotation && !getIsCovering())
-        return; 
-    } 
-    PsiComment classComment = null;
-    boolean isValidate = getIsValidate(psiField.getAnnotations());
-    for (PsiElement tmpEle : psiField.getChildren()) {
-      if (tmpEle instanceof PsiComment) {
-        String apiModelPropertyText;
-        classComment = (PsiComment)tmpEle;
-        String tmpText = classComment.getText();
-        String commentDesc = CommentUtils.getCommentDesc(tmpText);
-        commentDesc.replace("\"", "");
-        if(StringUtils.isEmpty(commentDesc)){
-          continue;
-        }
-        if (isValidate) {
-          apiModelPropertyText = String.format("@Schema(description=\"%s\", requiredMode = Schema.RequiredMode.REQUIRED)", new Object[] { commentDesc });
-        } else {
-          apiModelPropertyText = String.format("@Schema(description=\"%s\")", new Object[] { commentDesc });
-        } 
-        doWrite("Schema", SCHEMA.getQualifiedName(), apiModelPropertyText, (PsiModifierListOwner)psiField);
-      } 
-    } 
-    if (Objects.isNull(classComment)){
-      String translate = translatorService.translate(psiField.getName());
-      String apiModelPropertyText;
-      if (isValidate) {
-        apiModelPropertyText = String.format("@Schema(description=\"%s\", requiredMode = Schema.RequiredMode.REQUIRED)", new Object[] { translate });
-      } else {
-        apiModelPropertyText = String.format("@Schema(description=\"%s\")", new Object[] { translate });
+      if (hasAnnotation && !getIsCovering()) {
+          return;
       }
-      doWrite("Schema", SCHEMA.getQualifiedName(), apiModelPropertyText, (PsiModifierListOwner)psiField);
+    } 
+    boolean isValidate = getIsValidate(psiField.getAnnotations());
+    String commentDesc = CommentUtils.findCommentDescriptionOrTranslate(psiField, psiField.getName());
+    String apiModelPropertyText;
+    if (isValidate) {
+      apiModelPropertyText = String.format("@Schema(description=\"%s\", requiredMode = Schema.RequiredMode.REQUIRED)", new Object[] { commentDesc });
+    } else {
+      apiModelPropertyText = String.format("@Schema(description=\"%s\")", new Object[] { commentDesc });
     }
+    doWrite("Schema", SCHEMA.getQualifiedName(), apiModelPropertyText, (PsiModifierListOwner)psiField);
   }
 }

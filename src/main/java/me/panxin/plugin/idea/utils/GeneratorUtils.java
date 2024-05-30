@@ -5,14 +5,12 @@ import com.intellij.openapi.application.Application;
 import com.intellij.openapi.application.ApplicationActivationListener;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.Disposer;
 import com.intellij.psi.*;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.search.PsiShortNamesCache;
 import com.intellij.util.messages.MessageBusConnection;
-import me.panxin.plugin.idea.common.util.translator.TranslatorService;
 import me.panxin.plugin.idea.listener.AppActivationListener;
 import org.apache.commons.lang.StringUtils;
 
@@ -23,7 +21,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static me.panxin.plugin.idea.enums.SwaggerAnnotation.*;
-import static me.panxin.plugin.idea.utils.CommentUtils.formateAnnotation;
 
 /**
  * 生成器实用程序
@@ -52,7 +49,6 @@ public class GeneratorUtils {
     private final PsiElementFactory elementFactory;
     private final String selectionText;
 
-    private TranslatorService  translatorService = ServiceManager.getService(TranslatorService.class);
 
 
     public GeneratorUtils(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
@@ -69,6 +65,7 @@ public class GeneratorUtils {
         MessageBusConnection connection = app.getMessageBus().connect(disposable);
         connection.subscribe(ApplicationActivationListener.TOPIC, listener);
         listener.activate();
+
     }
 
     public void doGenerate() {
@@ -78,7 +75,7 @@ public class GeneratorUtils {
                 selection = true;
             }
             // 遍历当前对象的所有属性
-            boolean isController = this.isController(psiClass);
+            boolean isController = isController(psiClass);
             if (selection) {
                 this.generateSelection(psiClass, selectionText, isController);
                 return;
@@ -266,55 +263,22 @@ public class GeneratorUtils {
         if(hasSwaggerAnnotation(psiClass)){
             return;
         }
-        int num = 0;
-        PsiComment classComment = null;
-        for (PsiElement tmpEle : psiClass.getChildren()) {
-            if (tmpEle instanceof PsiComment){
-                classComment = (PsiComment) tmpEle;
-                // 注释的内容
-                String tmpText = classComment.getText();
-                String commentDesc = CommentUtils.getCommentDesc(tmpText);
-                commentDesc.replace("\"", "");
-                if(StringUtils.isEmpty(commentDesc)){
-                    commentDesc = translatorService.translate(psiClass.getName());
-                }
-                // 有些类里面会有多条注释
-                if(++num>1){
-                    break;
-                }
-                String annotationFromText;
-                String annotation;
-                String qualifiedName;
-                if (isController) {
-                    annotation = "Api";
-                    qualifiedName = "io.swagger.annotations.Api";
-                    String fieldValue = this.getMappingAttribute(psiClass.getModifierList().getAnnotations(), MAPPING_VALUE);
-                    annotationFromText = String.format("@%s(value = %s, tags = {\"%s\"})",annotation,fieldValue,commentDesc);
-                } else {
-                    annotation = "ApiModel";
-                    qualifiedName = APIMODEL.getQualifiedName();
-                    annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
-                }
-                this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
-            }
+        String commentDesc = CommentUtils.findCommentDescriptionOrTranslate(psiClass, psiClass.getName());
+        String annotationFromText;
+        String annotation;
+        String qualifiedName;
+        if (isController) {
+            annotation = "Api";
+            qualifiedName = "io.swagger.annotations.Api";
+            String fieldValue = this.getMappingAttribute(psiClass.getModifierList().getAnnotations(), MAPPING_VALUE);
+            annotationFromText = String.format("@%s(value = %s, tags = {\"%s\"})",annotation,fieldValue,commentDesc);
+        } else {
+            annotation = "ApiModel";
+            qualifiedName = APIMODEL.getQualifiedName();
+            annotationFromText = String.format("@%s(description = \"%s\")", annotation, commentDesc);
         }
-        if (Objects.isNull(classComment)) {
-            String translate = translatorService.translate(psiClass.getName());
-            String annotationFromText;
-            String annotation;
-            String qualifiedName;
-            if (isController) {
-                annotation = "Api";
-                qualifiedName = "io.swagger.annotations.Api";
-                String fieldValue = this.getMappingAttribute(psiClass.getModifierList().getAnnotations(), MAPPING_VALUE);
-                annotationFromText = String.format("@%s(value = %s, tags = {\"%s\"})",annotation,fieldValue,translate);
-            } else {
-                annotation = "ApiModel";
-                qualifiedName = "io.swagger.annotations.ApiModel";
-                annotationFromText = String.format("@%s(description = \"%s\")", annotation, translate);
-            }
-            this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
-        }
+        this.doWrite(annotation, qualifiedName, annotationFromText, psiClass);
+
     }
 
     /**
@@ -410,26 +374,9 @@ public class GeneratorUtils {
         if(hasSwaggerAnnotation(psiField)){
             return;
         }
-        PsiComment classComment = null;
-        for (PsiElement tmpEle : psiField.getChildren()) {
-            if (tmpEle instanceof PsiComment) {
-                classComment = (PsiComment) tmpEle;
-                // 注释的内容
-                String tmpText = classComment.getText();
-                String commentDesc = CommentUtils.getCommentDesc(tmpText);
-                commentDesc = formateAnnotation(commentDesc);
-                if(StringUtils.isNotEmpty(commentDesc)){
-                    String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",commentDesc);
-                    this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
-                }
-            }
-        }
-        if (Objects.isNull(classComment)) {
-            String name = psiField.getName();
-            String translate = translatorService.translate(name);
-            String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",translate);
-            this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
-        }
+        String commentDesc = CommentUtils.findCommentDescriptionOrTranslate(psiField, psiField.getName());
+        String apiModelPropertyText = String.format("@ApiModelProperty(value=\"%s\")",commentDesc);
+        this.doWrite("ApiModelProperty", "io.swagger.annotations.ApiModelProperty", apiModelPropertyText, psiField);
     }
 
     /**

@@ -17,7 +17,7 @@ import java.util.Objects;
  * @author panxin
  * @date 2024/05/30
  */
-public class PToolSettingsConfigurable implements Configurable {
+public class SwaggerSettingsConfigurable implements Configurable {
 
     private PToolConfig config = ServiceManager.getService(PToolConfigComponent.class).getState();
     private PToolSettingsView view = new PToolSettingsView();
@@ -25,7 +25,7 @@ public class PToolSettingsConfigurable implements Configurable {
     @Nls(capitalization = Capitalization.Title)
     @Override
     public String getDisplayName() {
-        return "EasyDocJavadoc";
+        return "PTool";
     }
 
     @Nullable

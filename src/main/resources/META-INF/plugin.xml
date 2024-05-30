@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.panxin.plugin.idea.PTool</id>
   <name>PTool</name>
-  <version>1.3.2</version>
+  <version>1.3.3</version>
   <vendor>Pan Xin</vendor>
 
   <description><![CDATA[
@@ -29,7 +29,7 @@
     <applicationService serviceImplementation="me.panxin.plugin.idea.config.PToolConfigComponent" order="first"/>
     <applicationService serviceImplementation="me.panxin.plugin.idea.common.util.translator.TranslatorService"/>
     <applicationConfigurable id="me.panxin.plugin.idea.setting" displayName="PTool" instance="me.panxin.plugin.idea.setting.CommonSettingsConfigurable"/>
-    <applicationConfigurable parentId ="me.panxin.plugin.idea.setting" id="me.panxin.plugin.idea.setting" displayName="PTool" instance="me.panxin.plugin.idea.setting.CommonSettingsConfigurable"/>
+    <applicationConfigurable parentId ="me.panxin.plugin.idea.setting" id="me.panxin.plugin.idea.setting.SwaggerSettingsConfigurable" displayName="Swagger" instance="me.panxin.plugin.idea.setting.SwaggerSettingsConfigurable"/>
   </extensions>
 
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html

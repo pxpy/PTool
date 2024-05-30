@@ -37,7 +37,7 @@
             </constraints>
             <properties>
               <requestFocusEnabled value="true"/>
-              <text value="作者"/>
+              <text value="中文前缀"/>
             </properties>
           </component>
           <component id="3b6e" class="javax.swing.JTextField" binding="authorTextField">

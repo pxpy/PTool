@@ -54,7 +54,7 @@ public abstract class AbstractGenerator {
   
   public final Integer version;
   
-  public volatile boolean isCovering = true;
+  public volatile boolean isCovering = false;
   
   public AbstractGenerator(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText, Integer version) {
     this.project = project;
@@ -80,65 +80,76 @@ public abstract class AbstractGenerator {
             generateClassAnnotation(this.psiClass, true);
             PsiMethod[] methods = this.psiClass.getMethods();
             for (PsiMethod psiMethod : methods) {
-              if (!psiMethod.isConstructor())
-                generateMethodAnnotation(psiMethod); 
+              if (!psiMethod.isConstructor()) {
+                  generateMethodAnnotation(psiMethod);
+              }
             } 
           });
     } else {
       PsiField[] finalField, field = this.psiClass.getFields();
       PsiField[] allFields = this.psiClass.getAllFields();
       boolean genParent = false;
-      if (field.length != allFields.length)
-        genParent = (new GenParentClassConfirmDialog("Generate swagger annotation", "Whether to generate annotations for parent classes?")).showAndGet();
+      if (field.length != allFields.length) {
+        //TODO 增加全局设置
+//          genParent = (new GenParentClassConfirmDialog("Generate swagger annotation", "Whether to generate annotations for parent classes?")).showAndGet();
+      }
       if (genParent) {
         finalField = allFields;
       } else {
         finalField = field;
       } 
       String qualifiedName = "io.swagger.v3.oas.annotations.media.Schema";
-      if (this.version.intValue() == 2)
-        qualifiedName = "io.swagger.annotations.ApiModelProperty"; 
-      boolean alertStatus = getAlertStatus3((PsiDocCommentOwner[])finalField, new String[] { qualifiedName });
-      if (alertStatus && this.isCovering) {
-        boolean genParent2 = (new GenIncreaseOrCoveringConfirmDialog("Generate swagger annotation", "Please select generate annotations mode.")).showAndGet();
-        this.isCovering = !genParent2;
-      } 
+      if (this.version.intValue() == 2) {
+          qualifiedName = "io.swagger.annotations.ApiModelProperty";
+      }
+      // TODO添加设置页面
+//      boolean alertStatus = getAlertStatus3((PsiDocCommentOwner[])finalField, new String[] { qualifiedName });
+//      if (alertStatus && this.isCovering) {
+//        boolean genParent2 = (new GenIncreaseOrCoveringConfirmDialog("Generate swagger annotation", "Please select generate annotations mode.")).showAndGet();
+//        this.isCovering = !genParent2;
+//      }
       WriteCommandAction.runWriteCommandAction(this.project, () -> {
             generateClassAnnotation(this.psiClass, false);
             PsiClass[] innerClasses = this.psiClass.getInnerClasses();
             generateInnerClass(innerClasses);
-            for (int i = 0; i < finalField.length; i++)
-              doGenerateFieldAnnotation(finalField[i], i); 
+            for (int i = 0; i < finalField.length; i++) {
+                doGenerateFieldAnnotation(finalField[i], i);
+            }
           });
     } 
   }
   
   private void generateInnerClass(PsiClass[] innerClasses) {
-    if (innerClasses.length > 0)
+    if (innerClasses.length > 0){
       for (PsiClass innerClass : innerClasses) {
         generateClassAnnotation(innerClass, false);
         PsiField[] field = innerClass.getAllFields();
-        for (int i = 0; i < field.length; i++)
-          doGenerateFieldAnnotation(field[i], i); 
+        for (int i = 0; i < field.length; i++) {
+          doGenerateFieldAnnotation(field[i], i);
+        }
         generateInnerClass(innerClass.getInnerClasses());
-      }  
+      }
+    }
   }
   
   public void doWrite(String name, String qualifiedName, String annotationText, PsiModifierListOwner psiModifierListOwner) {
     PsiAnnotation psiAnnotationDeclare = this.elementFactory.createAnnotationFromText(annotationText, (PsiElement)psiModifierListOwner);
     PsiNameValuePair[] attributes = psiAnnotationDeclare.getParameterList().getAttributes();
     PsiAnnotation existAnnotation = psiModifierListOwner.getModifierList().findAnnotation(qualifiedName);
-    if (existAnnotation != null)
-      existAnnotation.delete(); 
+    if (existAnnotation != null) {
+        existAnnotation.delete();
+    }
     addImport(this.psiFile, name, qualifiedName);
     PsiAnnotation psiAnnotation = psiModifierListOwner.getModifierList().addAnnotation(name);
-    for (PsiNameValuePair pair : attributes)
-      psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue()); 
+    for (PsiNameValuePair pair : attributes) {
+        psiAnnotation.setDeclaredAttributeValue(pair.getName(), pair.getValue());
+    }
   }
   
   private void generateSelection(PsiClass psiClass, String selectionText, boolean isController) {
-    if (Objects.equals(selectionText, psiClass.getName()))
-      generateClassAnnotation(psiClass, isController); 
+    if (Objects.equals(selectionText, psiClass.getName())) {
+        generateClassAnnotation(psiClass, isController);
+    }
     PsiMethod[] methods = psiClass.getMethods();
     for (PsiMethod psiMethod : methods) {
       if (Objects.equals(selectionText, psiMethod.getName())) {
@@ -161,8 +172,9 @@ public abstract class AbstractGenerator {
       String controllerAnnotation = "org.springframework.stereotype.Controller";
       String restControllerAnnotation = "org.springframework.web.bind.annotation.RestController";
       if (controllerAnnotation.equals(psiAnnotation.getQualifiedName()) || restControllerAnnotation
-        .equals(psiAnnotation.getQualifiedName()))
-        return true; 
+        .equals(psiAnnotation.getQualifiedName())) {
+          return true;
+      }
     } 
     return false;
   }
@@ -173,8 +185,9 @@ public abstract class AbstractGenerator {
       switch ((String)Objects.<String>requireNonNull(psiAnnotation.getQualifiedName())) {
         case "org.springframework.web.bind.annotation.RequestMapping":
           attribute = getAttribute(psiAnnotation, attributeName, "");
-          if (Objects.equals("\"\"", attribute))
-            return ""; 
+          if (Objects.equals("\"\"", attribute)) {
+              return "";
+          }
           return attribute;
         case "org.springframework.web.bind.annotation.PostMapping":
           return "POST";
@@ -192,45 +205,53 @@ public abstract class AbstractGenerator {
   }
   
   public String getAttribute(PsiAnnotation psiAnnotation, String attributeName, String comment) {
-    if (Objects.isNull(psiAnnotation))
-      return "\"" + comment + "\""; 
+    if (Objects.isNull(psiAnnotation)) {
+        return "\"" + comment + "\"";
+    }
     PsiAnnotationMemberValue psiAnnotationMemberValue = psiAnnotation.findDeclaredAttributeValue(attributeName);
-    if (Objects.isNull(psiAnnotationMemberValue))
-      return "\"" + comment + "\""; 
+    if (Objects.isNull(psiAnnotationMemberValue)) {
+        return "\"" + comment + "\"";
+    }
     return psiAnnotationMemberValue.getText();
   }
   
   public String getAttribute(PsiAnnotation psiAnnotation, String attributeName) {
-    if (Objects.isNull(psiAnnotation))
-      return null; 
+    if (Objects.isNull(psiAnnotation)) {
+        return null;
+    }
     PsiAnnotationMemberValue psiAnnotationMemberValue = psiAnnotation.findDeclaredAttributeValue(attributeName);
-    if (Objects.isNull(psiAnnotationMemberValue))
-      return null; 
+    if (Objects.isNull(psiAnnotationMemberValue)) {
+        return null;
+    }
     return psiAnnotationMemberValue.getText();
   }
   
   private static final Map<String, PsiClass> CLASS_MAP = new HashMap<>();
   
   private void doGenerateFieldAnnotation(PsiField psiField, int position) {
-    if ("serialVersionUID".equals(psiField.getName()))
-      return; 
+    if ("serialVersionUID".equals(psiField.getName())) {
+        return;
+    }
     doGenerateFieldAnnotation0(psiField, position);
   }
   
   public void addImport(PsiFile file, String className, String qualifiedName) {
-    if (!(file instanceof PsiJavaFile))
-      return; 
+    if (!(file instanceof PsiJavaFile)) {
+        return;
+    }
     PsiJavaFile javaFile = (PsiJavaFile)file;
     PsiImportList importList = javaFile.getImportList();
-    if (importList == null)
-      return; 
+    if (importList == null) {
+        return;
+    }
     if (CLASS_MAP.get(qualifiedName) != null) {
       addClassToImport(CLASS_MAP.get(qualifiedName), importList);
       return;
     } 
     PsiClass[] psiClasses = PsiShortNamesCache.getInstance(this.project).getClassesByName(className, GlobalSearchScope.allScope(this.project));
-    if (psiClasses.length == 0)
-      return; 
+    if (psiClasses.length == 0) {
+        return;
+    }
     PsiClass waiteImportClass = null;
     for (PsiClass psiClass : psiClasses) {
       if (qualifiedName.equals(psiClass.getQualifiedName())) {
@@ -238,8 +259,9 @@ public abstract class AbstractGenerator {
         break;
       } 
     } 
-    if (waiteImportClass == null)
-      return; 
+    if (waiteImportClass == null) {
+        return;
+    }
     CLASS_MAP.put(qualifiedName, waiteImportClass);
     addClassToImport(waiteImportClass, importList);
   }
@@ -247,8 +269,9 @@ public abstract class AbstractGenerator {
   private void addClassToImport(PsiClass waiteImportClass, PsiImportList importList) {
     for (PsiImportStatementBase is : importList.getAllImportStatements()) {
       String impQualifiedName = is.getImportReference().getQualifiedName();
-      if (waiteImportClass.getQualifiedName().equals(impQualifiedName))
-        return; 
+      if (waiteImportClass.getQualifiedName().equals(impQualifiedName)) {
+          return;
+      }
     } 
     importList.add((PsiElement)this.elementFactory.createImportStatement(waiteImportClass));
   }
@@ -256,8 +279,9 @@ public abstract class AbstractGenerator {
   public boolean getIsValidate(PsiAnnotation[] psiAnnotations) {
     String a = "javax.validation.constraints";
     for (PsiAnnotation tmpEle : psiAnnotations) {
-      if (((String)Objects.<String>requireNonNull(tmpEle.getQualifiedName())).startsWith(a))
-        return true; 
+      if (((String)Objects.<String>requireNonNull(tmpEle.getQualifiedName())).startsWith(a)) {
+          return true;
+      }
     } 
     return false;
   }
@@ -271,8 +295,9 @@ public abstract class AbstractGenerator {
   }
   
   public boolean getAlertStatus2(PsiDocCommentOwner psiField, String qualifiedName) {
-    if (!this.isCovering)
-      return false; 
+    if (!this.isCovering) {
+        return false;
+    }
     if (psiField.getModifierList() != null) {
       PsiAnnotation annotation = psiField.getModifierList().findAnnotation(qualifiedName);
       if (!Objects.isNull(annotation)) {
@@ -286,12 +311,14 @@ public abstract class AbstractGenerator {
   
   public boolean getAlertStatus3(PsiDocCommentOwner[] psiField, String... qualifiedNames) {
     for (PsiDocCommentOwner psiCommentOwner : psiField) {
-      if (psiCommentOwner.getModifierList() != null)
+      if (psiCommentOwner.getModifierList() != null){
         for (String name : qualifiedNames) {
-          if (psiCommentOwner.getModifierList().hasAnnotation(name))
-            return true; 
-        }  
-    } 
+          if (psiCommentOwner.getModifierList().hasAnnotation(name)) {
+            return true;
+          }
+        }
+      }
+    }
     return false;
   }
   
