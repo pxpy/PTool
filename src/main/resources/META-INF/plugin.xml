@@ -91,6 +91,10 @@
       <keyboard-shortcut first-keystroke="control shift 3"  keymap="$default"/>
       <add-to-group group-id="GenerateGroup" anchor="first" />
     </action>
+    <action id="me.panxin.plugin.idea.action.GenAllSwagger3AnnotationAction"
+            class="me.panxin.plugin.idea.action.GenAllSwagger3AnnotationAction">
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    </action>
   </actions>
 
 </idea-plugin>
