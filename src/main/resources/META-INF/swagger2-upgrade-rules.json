@@ -8,12 +8,20 @@
     "replacement": "@Operation(summary = $1, description = $2)"
   },
   {
+    "pattern": "@ApiOperation\\(value = (.*)\\)",
+    "replacement": "@Operation(summary = $1, description = $1)"
+  },
+  {
     "pattern": "@ApiOperation\\((.*)\\)",
-    "replacement": "@Operation(summary = $1, description = $2)"
+    "replacement": "@Operation(summary = $1, description = $1)"
+  },
+  {
+    "pattern": "@ApiModelProperty\\(value = (.*)\\)",
+    "replacement": "@Schema(description = $1 )"
   },
   {
     "pattern": "@ApiModelProperty\\(\\\"(.*?)\\\"\\)",
-    "replacement": "@Schema(description = \\\"$1\\\")"
+    "replacement": "@Schema(description = $1 )"
   },
   {
     "pattern": "import io.swagger.annotations.ApiModelProperty;",

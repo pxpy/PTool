@@ -49,7 +49,12 @@ public class Swagger2UpgradeService {
 
         // 按照读取的顺序执行替换规则
         for (ReplacementRule rule : rules) {
-            text = text.replaceAll(rule.getPattern(), rule.getReplacement());
+            try {
+                text = text.replaceAll(rule.getPattern(), rule.getReplacement());
+            } catch (Exception e) {
+                System.out.println(rule);
+                System.out.println(e);
+            }
         }
         document.setText(text);
     }
@@ -70,6 +75,14 @@ public class Swagger2UpgradeService {
 
         public String getReplacement() {
             return replacement;
+        }
+
+        @Override
+        public String toString() {
+            return "ReplacementRule{" +
+                    "pattern='" + pattern + '\'' +
+                    ", replacement='" + replacement + '\'' +
+                    '}';
         }
     }
 }
