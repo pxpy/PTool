@@ -12,8 +12,8 @@ import org.apache.commons.lang3.ArrayUtils;
 /**
  * 通知工具类
  *
- * @author wangchao
- * @date 2022/11/06
+ * @author panxin
+ * @date 2024/05/30
  */
 public class NotificationUtil {
 

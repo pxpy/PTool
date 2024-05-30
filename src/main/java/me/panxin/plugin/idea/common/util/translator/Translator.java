@@ -6,8 +6,8 @@ import me.panxin.plugin.idea.config.PToolConfig;
 /**
  * 翻译
  *
- * @author wangchao
- * @date 2019/11/25
+ * @author panxin
+ * @date 2024/05/30
  */
 public interface Translator {
 

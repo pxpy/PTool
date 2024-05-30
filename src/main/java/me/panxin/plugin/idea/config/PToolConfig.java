@@ -1,11 +1,6 @@
 package me.panxin.plugin.idea.config;
 
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
 import com.alibaba.fastjson2.annotation.JSONField;
-
 import com.google.common.collect.Maps;
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
@@ -13,11 +8,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import me.panxin.plugin.idea.common.util.translator.Consts;
 
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
+
 /**
  * 持久化配置文件
  *
- * @author wangchao
- * @date 2019/08/25
+ * @author panxin
+ * @date 2024/05/30
  */
 public class PToolConfig {
 

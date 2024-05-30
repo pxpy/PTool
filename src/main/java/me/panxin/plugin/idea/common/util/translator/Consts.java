@@ -1,15 +1,15 @@
 package me.panxin.plugin.idea.common.util.translator;
 
-import java.util.Set;
-
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+
+import java.util.Set;
 
 /**
  * 常量
  *
- * @author wangchao
- * @date 2019/12/08
+ * @author panxin
+ * @date 2024/05/30
  */
 public class Consts {
 

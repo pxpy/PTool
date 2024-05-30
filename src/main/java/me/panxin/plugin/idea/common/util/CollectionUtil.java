@@ -5,8 +5,8 @@ import java.util.Collection;
 /**
  * 集合工具
  *
- * @author wangchao
- * @date 2019/12/14
+ * @author panxin
+ * @date 2024/05/30
  */
 public class CollectionUtil {
 

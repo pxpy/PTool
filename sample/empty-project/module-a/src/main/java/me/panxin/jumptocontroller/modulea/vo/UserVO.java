@@ -8,7 +8,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @version $ Id: UserVo, v 0.1 2023/05/22 20:38 PanXin Exp $
  */
 @ApiModel(description = "用户 vo")
-public class UserVo {
+public class UserVO {
 
     /**
      * 用户名

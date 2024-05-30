@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 /**
  * 字符串工具类
  *
- * @author wangchao
- * @date 2022/01/01
+ * @author panxin
+ * @date 2024/05/30
  */
 public class StringUtil {
 

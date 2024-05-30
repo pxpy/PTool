@@ -7,8 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
- * @author wangchao
- * @date 2020/08/28
+ * @author panxin
+ * @date 2024/05/30
  */
 public abstract class AbstractTranslator implements Translator {
 

@@ -13,8 +13,8 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Objects;
 
 /**
- * @author wangchao
- * @date 2019/08/25
+ * @author panxin
+ * @date 2024/05/30
  */
 @State(name = "pTool", storages = {@Storage("pTool.xml")})
 public class PToolConfigComponent implements PersistentStateComponent<PToolConfig> {

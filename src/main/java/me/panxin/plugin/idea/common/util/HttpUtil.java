@@ -1,19 +1,5 @@
 package me.panxin.plugin.idea.common.util;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.Proxy;
-import java.net.Proxy.Type;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collectors;
-
 import com.google.common.collect.Maps;
 import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.util.proxy.CommonProxy;
@@ -30,11 +16,21 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+import java.net.Proxy.Type;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
+
 /**
  * http工具类
  *
- * @author wangchao
- * @date 2019/09/01
+ * @author panxin
+ * @date 2024/05/30
  */
 public class HttpUtil {
     private static final Logger LOGGER = Logger.getInstance(HttpUtil.class);

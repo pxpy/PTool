@@ -1,10 +1,5 @@
 package me.panxin.plugin.idea.common.util.translator;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.intellij.openapi.project.Project;
@@ -20,9 +15,14 @@ import me.panxin.plugin.idea.config.PToolConfig;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 /**
- * @author wangchao
- * @date 2019/08/25
+ * @author panxin
+ * @date 2024/05/30
  */
 public class TranslatorService {
 

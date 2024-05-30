@@ -20,8 +20,8 @@ import java.net.URI;
 /**
  * 应用程序激活监听器
  *
- * @author wangchao
- * @date 2022/03/13
+ * @author panxin
+ * @date 2024/05/30
  */
 public class AppActivationListener implements ApplicationActivationListener {
     private static final Logger LOGGER = Logger.getInstance(AppActivationListener.class);
