@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.panxin.plugin.idea.PTool</id>
   <name>PTool</name>
-  <version>1.3.3</version>
+  <version>1.3.4</version>
   <vendor>Pan Xin</vendor>
 
   <description><![CDATA[
@@ -95,6 +95,10 @@
     </action>
     <action id="me.panxin.plugin.idea.action.GenAllSwagger3AnnotationAction"
             class="me.panxin.plugin.idea.action.GenAllSwagger3AnnotationAction">
+      <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+    </action>
+    <action id="me.panxin.plugin.idea.action.GenAllSwagger2AnnotationAction"
+            class="me.panxin.plugin.idea.action.GenAllSwagger2AnnotationAction">
       <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
     </action>
   </actions>

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.panxin.plugin.idea"
-version = "1.3.3"
+version = "1.3.4"
 
 repositories {
     mavenCentral()

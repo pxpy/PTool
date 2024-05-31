@@ -7,7 +7,6 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.*;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
-import me.panxin.plugin.idea.utils.GeneratorSwagger3;
 import me.panxin.plugin.idea.utils.GeneratorUtils;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +14,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class GenAllSwagger3AnnotationAction extends AnAction {
+public class GenAllSwagger2AnnotationAction extends AnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent event) {
         Project project = event.getProject();
@@ -52,7 +51,7 @@ public class GenAllSwagger3AnnotationAction extends AnAction {
                 PsiClassOwner classOwner = (PsiClassOwner) psiFile;
                 for (PsiClass psiClass : classOwner.getClasses()) {
 //                    System.out.println("Found Class: " + psiClass.getQualifiedName());
-                    new GeneratorSwagger3(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
+                    new GeneratorUtils(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
                 }
             }
         }
