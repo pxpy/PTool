@@ -29,8 +29,6 @@ import static me.panxin.plugin.idea.enums.SwaggerAnnotation.SCHEMA;
  */
 public class GeneratorSwagger3 extends AbstractGenerator {
 
-  private TranslatorService translatorService = ServiceManager.getService(TranslatorService.class);
-
 
   public GeneratorSwagger3(Project project, PsiFile psiFile, PsiClass psiClass, String selectionText) {
     super(project, psiFile, psiClass, selectionText, Integer.valueOf(3));
