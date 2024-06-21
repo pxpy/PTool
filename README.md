@@ -44,3 +44,6 @@ IDEA Plugin -Generate swagger annotation
 ### 使用方法
 1. 单个类，右键generate-SwaggerAnnotation
 2. 批量生成，菜单栏-tool-PTool
+
+### swagger2升级为3
+采用正则表达式替换

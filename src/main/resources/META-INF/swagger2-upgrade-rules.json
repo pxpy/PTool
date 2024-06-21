@@ -4,6 +4,10 @@
     "replacement": "@Tag(name= $2, description= $1)"
   },
   {
+    "pattern": "@Api\\(tags = (.*)\\)",
+    "replacement": "@Tag(name= $1, description= $1)"
+  },
+  {
     "pattern": "@ApiOperation\\(value = (.*), notes = (.*)\\)",
     "replacement": "@Operation(summary = $1, description = $2)"
   },
@@ -21,7 +25,7 @@
   },
   {
     "pattern": "@ApiModelProperty\\(\\\"(.*?)\\\"\\)",
-    "replacement": "@Schema(description = $1 )"
+    "replacement": "@Schema(description = \\\"$1\\\" )"
   },
   {
     "pattern": "import io.swagger.annotations.ApiModelProperty;",
@@ -29,6 +33,10 @@
   },
   {
     "pattern": "@ApiModel\\(description = \\\"(.*?)\\\"\\)",
+    "replacement": "@Schema(description = \\\"$1\\\")"
+  },
+  {
+    "pattern": "@ApiModel\\(value = \\\"(.*?)\\\"\\)",
     "replacement": "@Schema(description = \\\"$1\\\")"
   },
   {
