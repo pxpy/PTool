@@ -54,7 +54,12 @@ public abstract class AbstractSwaggerAnnotationAction extends AnAction {
                 for (PsiClass psiClass : classOwner.getClasses()) {
 //                    System.out.println("Found Class: " + psiClass.getQualifiedName());
 //                    new GeneratorSwagger3(project, psiClass.getContainingFile(), psiClass, "").doGenerate();
-                    generate(psiClass, psiFile);
+                    try {
+                        generate(psiClass, psiFile);
+                    } catch (Exception e) {
+                        System.out.println(psiClass.getQualifiedName());
+                        System.out.println(e.getMessage());
+                    }
                 }
             }
         }

@@ -5,9 +5,11 @@ plugins {
 }
 
 group = "me.panxin.plugin.idea"
-version = "1.3.4"
+version = "1.3.5"
 
 repositories {
+    mavenLocal()
+    maven { url = uri("https://maven.aliyun.com/nexus/content/groups/public/")}
     mavenCentral()
 }
 
