@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>me.panxin.plugin.idea.PTool</id>
   <name>PTool</name>
-  <version>1.3.5</version>
+  <version>1.4.0</version>
   <vendor>Pan Xin</vendor>
 
   <description><![CDATA[

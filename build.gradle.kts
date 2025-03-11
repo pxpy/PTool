@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "me.panxin.plugin.idea"
-version = "1.3.6"
+version = "1.4.0"
 
 repositories {
     mavenLocal()
@@ -18,6 +18,9 @@ intellij {
     version.set("2021.2")
     type.set("IC") // Target IDE Platform
     plugins.set(listOf("com.intellij.java"))
+}
+tasks.withType<org.jetbrains.intellij.tasks.IntelliJInstrumentCodeTask>().configureEach {
+    compilerClassPathFromMaven.set(emptyList())
 }
 
 dependencies {
@@ -43,7 +46,7 @@ tasks {
 
     patchPluginXml {
         sinceBuild.set("193")
-        untilBuild.set("242.*")
+        untilBuild.set("243.*")
     }
 
     signPlugin {
@@ -59,3 +62,8 @@ tasks {
         jvmArgs("-Xmx2048m","-XX:ReservedCodeCacheSize=512m","-Xms128m")
     }
 }
+
+tasks.named("instrumentCode") {
+    enabled = false
+}
+

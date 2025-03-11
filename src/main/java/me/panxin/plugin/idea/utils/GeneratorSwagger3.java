@@ -78,7 +78,7 @@ public class GeneratorSwagger3 extends AbstractGenerator {
     PsiAnnotation apiOperationExist = psiMethod.getModifierList().findAnnotation("io.swagger.v3.oas.annotations.Operation");
     String apiOperationAttrValue = getAttribute(apiOperationExist, "summary", commentDesc);
     String apiOperationAttrNotes = getAttribute(apiOperationExist, "description", commentDesc);
-    String apiOperationAnnotationText = String.format("@Operation(summary = %s, description = %s)", new Object[] { apiOperationAttrValue, apiOperationAttrNotes });
+    String apiOperationAnnotationText = String.format("@Operation(summary = %s, description = %s,description = \"[author:10234090]\" )", new Object[] { apiOperationAttrValue, apiOperationAttrNotes });
     PsiParameter[] psiParameters = psiMethod.getParameterList().getParameters();
     List<String> parameterList = new ArrayList<>(psiParameters.length);
     for (PsiParameter psiParameter : psiParameters) {
