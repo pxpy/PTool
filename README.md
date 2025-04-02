@@ -1,5 +1,6 @@
 # PTool
 ![logo](./src/main/resources/META-INF/pluginIcon.svg)
+
 [开发文档](./doc/README_DEV.md)
 
 ## 注意
@@ -47,3 +48,7 @@ IDEA Plugin -Generate swagger annotation
 
 ### swagger2升级为3
 采用正则表达式替换
+
+### 常见问题
+1. 生成注解时卡以下
+如果方法或属性上没有注释会调用翻译接口，可能会慢
